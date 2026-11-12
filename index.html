@@ -57,6 +57,7 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 @media(max-width:850px){.app{grid-template-columns:1fr}aside{padding:13px 16px;border-right:0;gap:13px}.navlabel,.side-note{display:none}nav{display:flex;overflow:auto}.nav{white-space:nowrap;padding:9px 11px}main{padding:25px 16px 45px}.topbar{margin-bottom:24px}}
 @media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.cards{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero .primary{width:100%}.two{grid-template-columns:1fr}.grid th:first-child,.grid td:first-child{width:92px}.grid td,.grid th{padding:9px 6px}.cellin{gap:6px}}
 .grid th.me{background:#e2c9a6}.wait{color:var(--muted);font-size:14px}
+.cellcol{display:grid;gap:6px;justify-items:center}.btns{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}.mini{border:1px solid #b3a584;background:#fffdf6;color:var(--bur);border-radius:8px;padding:5px 8px;font-size:11px;font-weight:700}.mini.run{background:var(--bur);color:var(--cream);border-color:var(--bur)}
 </style>
 </head>
 <body>
@@ -120,8 +121,12 @@ const fm=m=>m>=60?(m/60).toFixed(1)+' h':m+' m';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(s){const t=$('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200)}
 function dayList(c){const a=[];let s=c.start;while(s<=c.end&&a.length<31){a.push(s);s=addDays(s,1)}return a}
-const cnt=p=>Object.values(p.entries).filter(e=>e.completed).length;
-const pmins=p=>Object.values(p.entries).filter(e=>e.completed).reduce((m,e)=>m+e.duration,0);
+const eDone=e=>e.done>=e.duration;
+const cnt=p=>Object.values(p.entries).filter(eDone).length;
+const pmins=p=>Object.values(p.entries).reduce((m,e)=>m+e.done,0);
+/* planned time: rolled days use their rolled duration; past days that nobody rolled count as 60 min (the average of the 4:3:2:1 odds) */
+function planned(c,p,all){const t=iso(new Date());return dayList(c).reduce((s,k)=>{const e=p.entries[k];return s+(e?e.duration:(all||c.finished||k<t?60:0))},0)}
+function pct(c,p,all){const pl=planned(c,p,all),d=Object.values(p.entries).reduce((s,e)=>s+Math.min(e.done,e.duration),0);return pl?Math.round(d/pl*1000)/10:0}
 const findC=id=>data.find(x=>x.id===id);
 function statsFor(uid){let d=0,m=0;data.forEach(c=>c.people.forEach(p=>{if(uid&&p.user_id===uid){d+=cnt(p);m+=pmins(p)}}));return{d,m}}
 /* 30 / 60 / 90 / 120 min with odds 4 : 3 : 2 : 1 */
@@ -156,7 +161,7 @@ async function load(){
  if(err){toast('Could not load data: '+err.message);return}
  data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,
   people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{}}))}));
- c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,completed:e.completed}});
+ c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,done:e.minutes_done||(e.completed?e.duration_minutes:0),started:e.timer_started_at,completed:e.completed}});
  refresh()}
 
 /* ---- Navigation & modals ---- */
@@ -186,10 +191,10 @@ $('form').onsubmit=async e=>{e.preventDefault();
  await load();closeModal();resetForm();toast('Your challenge is ready!');openChallenge(r1.data.id)};
 
 /* ---- Lists ---- */
-function summary(c){const r=c.result;if(!r)return'';if(r.solo)return`Completed ${r.counts[0].n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
+function summary(c){const r=c.result;if(!r)return'';const x=r.counts[0];if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
 function card(c){const n=dayList(c).length;
- const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=cnt(p),pc=n?Math.round(k/n*100):0;
-  return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${k} / ${n}</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
+ const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const pc=pct(c,p);
+  return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${pc}%</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
  return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?'done':''}">${c.finished?'FINISHED':'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${fmt(c.start)} — ${fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} days</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
 const empty=s=>`<div class="empty"><strong>${s}</strong>Create a challenge and let the little wins begin.</div>`;
 function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.finished),my=statsFor(myId),other=profiles.find(p=>p.user_id!==myId),os=other?statsFor(other.user_id):null;
@@ -205,48 +210,57 @@ function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.fi
 /* ---- Challenge page with the table ---- */
 function openChallenge(id){current=id;showPage('detail');detail()}
 function resultHTML(c){const r=c.result;let t;
- const line=r.counts.map(x=>`${esc(x.name)} ${x.n}/${r.n}`).join(' · ');
- if(r.solo)t=`<h2>Challenge complete</h2><p>${r.counts[0].n} of ${r.n} days completed. Well done!</p>`;
- else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same number of completed days, so no punishment this time.</p>`;
+ const one=x=>x.pct!==undefined?`${esc(x.name)} ${x.pct}%`:`${esc(x.name)} ${x.n}/${r.n}`,x0=r.counts[0];
+ const line=r.counts.map(one).join(' · ');
+ if(r.solo)t=`<h2>Challenge complete</h2><p>${x0.pct!==undefined?x0.pct+'% of the planned time':x0.n+' of '+r.n+' days'} completed. Well done!</p>`;
+ else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same total result, so no punishment this time.</p>`;
  else t=`<h2>Winner: ${r.winners.map(esc).join(' &amp; ')}!</h2>`+r.losers.map(l=>`<p><b>${esc(l.name)}</b>’s punishment: ${l.punishment?esc(l.punishment):'none was set'}</p>`).join('');
  return `<div class="result">${t}<div class="meta" style="margin-top:10px">${line}</div></div>`}
 function detail(){const c=findC(current);if(!c)return;const ds=dayList(c);
  let h=`<div class="eyebrow">${c.type.toUpperCase()} CHALLENGE</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little progress, one day at a time.')}</p><p class="meta" style="margin-top:6px">${fmt(c.start)} — ${fmt(c.end)}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  else if(c.people.some(p=>p.punishment))h+=`<div class="chips">${c.people.filter(p=>p.punishment).map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
- h+=`<div class="tablewrap"><table class="grid"><thead><tr><th>Day</th>${c.people.map(p=>`<th class="${p.user_id===myId?'me':''}">${esc(p.name)}${p.user_id===myId?' (you)':''}<small>${cnt(p)} / ${ds.length} done</small></th>`).join('')}</tr></thead><tbody>`;
+
+ h+=`<div class="tablewrap"><table class="grid"><thead><tr><th>Day</th>${c.people.map(p=>`<th class="${p.user_id===myId?'me':''}">${esc(p.name)}${p.user_id===myId?' (you)':''}<small>${pct(c,p)}% · ${pmins(p)} min</small></th>`).join('')}</tr></thead><tbody>`;
  ds.forEach(k=>{h+=`<tr><td class="dcell"><b>${dt(k).toLocaleDateString('en-US',{weekday:'long'})}</b><small>${fmt(k)}</small></td>`;
-  c.people.forEach(p=>{const e=p.entries[k],mine=p.user_id===myId,dis=(c.finished||!mine)?'disabled':'';
-   h+=e?`<td class="${e.completed?'done':''}"><div class="cellin"><span class="dur">${dur(e.duration)}</span><input class="check" type="checkbox" ${e.completed?'checked':''} ${dis} onchange="mark(${c.id},${p.id},'${k}',this.checked)"></div></td>`
-       :(mine&&!c.finished?`<td><button class="roll" onclick="roll(${c.id},${p.id},'${k}')">Set time</button></td>`:`<td><span class="wait">—</span></td>`)});
+  c.people.forEach(p=>{const e=p.entries[k],mine=p.user_id===myId,can=mine&&!c.finished,a=`${c.id},${p.id},'${k}'`;
+   if(!e){h+=can?`<td><button class="roll" onclick="roll(${a})">Set time</button></td>`:`<td><span class="wait">—</span></td>`;return}
+   const full=eDone(e),pc=Math.min(100,Math.round(e.done/e.duration*100));
+   h+=`<td class="${full?'done':''}"${!full&&e.done>0?` style="background:linear-gradient(90deg,#bcd9ae ${pc}%,transparent ${pc}%)"`:''}><div class="cellcol"><span class="dur">${e.done} / ${e.duration} min</span>${e.started?`<span class="wait">⏱ <span class="live" data-s="${e.started}"></span></span>`:''}${can?`<div class="btns">${e.started?`<button class="mini run" onclick="stopTimer(${a})">■ Stop</button>`:`<button class="mini" onclick="startTimer(${a})">▶ Start</button>`}<button class="mini" onclick="addMin(${a})">＋ min</button>${full?'':`<button class="mini" onclick="fullDone(${a})">✓</button>`}</div>`:''}</div></td>`});
   h+='</tr>'});
  h+='</tbody></table></div>';
  if(!c.finished)h+=`<div class="finishrow"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
- $('detailContent').innerHTML=h}
+ $('detailContent').innerHTML=h;tick()}
 
-/* Optimistic update first, then the database. The unique (participant_id, challenge_date) rule
-   guarantees one time per day even if two devices of the same person roll at once. */
+/* A day gets one random time. Minutes read are added manually or with the timer; the start time of a running timer lives in the database. */
 async function roll(cid,pid,k){const c=findC(cid);if(!c||c.finished)return;const p=c.people.find(x=>x.id===pid);if(!p||p.user_id!==myId||p.entries[k])return;
- const d=pick();p.entries[k]={duration:d,completed:false};refresh();
+ const d=pick();p.entries[k]={duration:d,done:0,started:null,completed:false};refresh();
  const {error}=await sb.from('challenge_entries').insert({challenge_id:cid,participant_id:pid,challenge_date:k,duration_minutes:d});
  if(error){await load();toast('This day was already set — showing the saved time.')}}
-async function mark(cid,pid,k,v){const c=findC(cid);if(!c||c.finished)return;const p=c.people.find(x=>x.id===pid);if(!p||p.user_id!==myId||!p.entries[k])return;
- p.entries[k].completed=v;refresh();
- const {error}=await sb.from('challenge_entries').update({completed:v}).eq('participant_id',pid).eq('challenge_date',k);
+function ctx(cid,pid,k){const c=findC(cid);if(!c||c.finished)return null;const p=c.people.find(x=>x.id===pid);if(!p||p.user_id!==myId||!p.entries[k])return null;return{c,p,e:p.entries[k]}}
+async function saveEntry(p,k,patch){const e=p.entries[k];if(patch.done!==undefined)e.done=patch.done;if('started' in patch)e.started=patch.started;e.completed=eDone(e);refresh();
+ const {error}=await sb.from('challenge_entries').update({minutes_done:e.done,completed:e.completed,timer_started_at:e.started}).eq('participant_id',p.id).eq('challenge_date',k);
  if(error){toast('Could not save: '+error.message);await load()}}
+function startTimer(cid,pid,k){const x=ctx(cid,pid,k);if(!x||x.e.started)return;saveEntry(x.p,k,{started:new Date().toISOString()})}
+function stopTimer(cid,pid,k){const x=ctx(cid,pid,k);if(!x||!x.e.started)return;const m=Math.round((Date.now()-new Date(x.e.started))/60000);saveEntry(x.p,k,{done:x.e.done+m,started:null});toast('+'+m+' min added')}
+function fullDone(cid,pid,k){const x=ctx(cid,pid,k);if(!x)return;saveEntry(x.p,k,{done:Math.max(x.e.done,x.e.duration)})}
+function addMin(cid,pid,k){openDlg(`<h2>Add minutes</h2><p>How many minutes did you read? Use a negative number to fix a mistake.</p><div class="field"><input id="addm" type="number" min="-600" max="600" inputmode="numeric" placeholder="e.g. 25"></div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Cancel</button><button class="primary" onclick="confirmAdd(${cid},${pid},'${k}')">Add</button></div>`);setTimeout(()=>$('addm').focus(),50)}
+function confirmAdd(cid,pid,k){const v=parseInt($('addm').value,10);if(!v)return toast('Enter a number of minutes.');const x=ctx(cid,pid,k);closeDlg();if(!x)return;saveEntry(x.p,k,{done:Math.max(0,x.e.done+v)})}
+function tick(){document.querySelectorAll('.live').forEach(el=>{const t=Math.max(0,Math.floor((Date.now()-new Date(el.dataset.s))/1000));el.textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')})}
+setInterval(tick,1000);
 async function del(id){if(!confirm('Delete this challenge for good?'))return;
  const r=await sb.from('challenges').delete().eq('id',id);
  if(r.error)return toast('Could not delete: '+r.error.message);
  await load();showPage('challenges')}
 
 /* ---- Finish challenge ---- */
-function askFinish(id){const c=findC(id),n=dayList(c).length;
- openDlg(`<h2>Finish this challenge?</h2><p>We will count the completed days and move the challenge to the archive. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${cnt(p)} / ${n}</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
-async function finish(id){const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,n:cnt(p),punishment:p.punishment})),r={n,counts:cs};
+function askFinish(id){const c=findC(id);
+ openDlg(`<h2>Finish this challenge?</h2><p>We will compare the total result of each participant and move the challenge to the archive. Days nobody set a time for count as 60 minutes. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${pct(c,p,true)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
+async function finish(id){const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs};
  if(cs.length<2)r.solo=true;
- else{const mx=Math.max(...cs.map(x=>x.n)),mn=Math.min(...cs.map(x=>x.n));
+ else{const mx=Math.max(...cs.map(x=>x.pct)),mn=Math.min(...cs.map(x=>x.pct));
   if(mx===mn)r.tie=true;
-  else{r.winners=cs.filter(x=>x.n===mx).map(x=>x.name);r.losers=cs.filter(x=>x.n===mn).map(x=>({name:x.name,punishment:x.punishment}))}}
+  else{r.winners=cs.filter(x=>x.pct===mx).map(x=>x.name);r.losers=cs.filter(x=>x.pct===mn).map(x=>({name:x.name,punishment:x.punishment}))}}
  const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',id);
  if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
  c.finished=true;c.result=r;refresh();
