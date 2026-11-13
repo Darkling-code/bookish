@@ -58,6 +58,19 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 @media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.cards{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero .primary{width:100%}.two{grid-template-columns:1fr}.grid th:first-child,.grid td:first-child{width:92px}.grid td,.grid th{padding:9px 6px}.cellin{gap:6px}}
 .grid th.me{background:#e2c9a6}.wait{color:var(--muted);font-size:14px}
 .cellcol{display:grid;gap:6px;justify-items:center}.btns{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}.mini{border:1px solid #b3a584;background:#fffdf6;color:var(--bur);border-radius:8px;padding:5px 8px;font-size:11px;font-weight:700}.mini.run{background:var(--bur);color:var(--cream);border-color:var(--bur)}
+[hidden]{display:none!important}
+.modal form div[id^=st]>p{font-size:12px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.choices{display:grid;gap:10px}.choice{text-align:left;border:1px solid var(--line);background:#fffdf6;color:var(--ink);border-radius:14px;padding:14px 16px;display:grid;gap:4px}.choice b{font:600 18px Lora,serif;color:var(--bur)}.choice span{font-size:12px;color:var(--muted)}.choice:hover{border-color:var(--bur)}.choice.soon{opacity:.5;border-style:dashed}.choice.soon:hover{border-color:var(--line)}
+.pcheck{display:flex;align-items:center;gap:8px;font-size:13px}.pcheck input{width:18px;height:18px;accent-color:#3f7a3a}
+.qpath{margin:6px 0 24px}.qrow{display:grid;grid-template-columns:repeat(var(--c),1fr);gap:22px;margin-bottom:22px}.qrow:last-child{margin-bottom:0}.qrow.rtl{direction:rtl}
+.sq{direction:ltr;position:relative;aspect-ratio:1;border-radius:16px;display:grid;place-items:center;align-content:center;gap:2px;background:#ffffff12;border:1px solid #ffffff26;color:var(--soft)}
+.sq .n{font-size:13px;font-weight:600;opacity:.8}.sq .ic{font-size:22px}
+.sq.open{background:var(--bur);border:2px solid #e9b8c2;color:var(--cream)}.sq.done{background:var(--cream);color:#2f5a2b;border-color:var(--cream)}
+.sq.hn::after{content:'';position:absolute;top:50%;width:22px;height:3px;margin-top:-1px;background:#ffffff40}.ltr .sq.hn::after{left:100%}.rtl .sq.hn::after{right:100%}
+.sq.dn::before{content:'';position:absolute;left:50%;top:100%;width:3px;height:22px;margin-left:-1px;background:#ffffff40}
+.pill{border:1px solid #ffffff2a;background:#ffffff14;color:var(--cream);border-radius:20px;padding:8px 14px;font-size:12px;font-weight:600}.pill.on{background:var(--cream);color:var(--bur)}
+.hist{display:grid}.hrow{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #e6dcc4;font-size:13px}.hrow:last-child{border-bottom:0}.hrow>b{color:var(--bur)}
+@media(max-width:600px){.qrow{gap:14px;margin-bottom:14px}.sq.hn::after{width:14px}.sq.dn::before{height:14px}}
 </style>
 </head>
 <body>
@@ -85,14 +98,20 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
  <section class="page" id="detail"><button class="back" onclick="showPage('challenges')">← BACK TO CHALLENGES</button><div id="detailContent"></div></section>
 </main></div>
 
-<div class="backdrop" id="backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><form id="form"><h2>Create a challenge</h2><p>Give your next little adventure a name.</p>
+<div class="backdrop" id="backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><form id="form">
+<div id="st1"><h2>New challenge</h2><p>Step 1 of 3 — what kind of challenge?</p>
+ <div class="choices"><button type="button" class="choice" onclick="pickKind('time')"><b>Reading Time</b><span>A random reading time for every day, with progress in minutes.</span></button><button type="button" class="choice" onclick="pickKind('quest')"><b>Reading Quest</b><span>A chain of book tasks. Each next task opens at random.</span></button><div class="choice soon"><b>More types</b><span>Coming soon</span></div></div>
+ <div class="modalactions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button></div></div>
+<div id="st2" hidden><h2>Who is it for?</h2><p>Step 2 of 3 — choose a category</p>
+ <div class="choices"><button type="button" class="choice" onclick="pickType('shared')"><b>Shared</b><span>Several people, everyone has their own progress.</span></button><button type="button" class="choice" onclick="pickType('personal')"><b>Personal</b><span>Just you. Others can look, but not interact.</span></button></div>
+ <div class="modalactions"><button type="button" class="secondary" onclick="showStep(1)">Back</button></div></div>
+<div id="st3" hidden><h2>Details</h2><p>Step 3 of 3 — almost there</p>
  <div class="field"><label for="title">Challenge name</label><input id="title" required maxlength="70" placeholder="e.g. A little daily discipline"></div>
  <div class="field"><label for="description">Description (optional)</label><textarea id="description" rows="2" placeholder="A little note about this challenge..."></textarea></div>
- <div class="field"><label for="type">Challenge type</label><select id="type"><option value="shared">Shared challenge</option><option value="personal">Personal challenge</option></select></div>
- <div class="field"><label for="participants">Participants</label><input id="participants" value="Diasha, Alina" oninput="punFields()"><small style="font-size:10px;color:var(--muted)">Separate names with commas. For a personal challenge, enter one name.</small></div>
- <div class="two"><div class="field"><label for="start">Start date</label><input id="start" type="date" required></div><div class="field"><label for="end">End date</label><input id="end" type="date" required></div></div>
- <div id="punFields"></div>
- <div class="modalactions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button><button class="primary">Create challenge</button></div>
+ <div class="field" id="partWrap"><label>Participants</label><div id="partBoxes" style="display:grid;gap:8px"></div></div>
+ <div id="timeFields"><div class="two"><div class="field"><label for="start">Start date</label><input id="start" type="date"></div><div class="field"><label for="end">End date</label><input id="end" type="date"></div></div><div id="punFields"></div></div>
+ <div id="questFields"><div class="field"><label for="qsize">Number of tasks</label><select id="qsize"><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option></select><small style="font-size:10px;color:var(--muted)">The first task is always “read any book”. The rest open at random.</small></div></div>
+ <div class="modalactions"><button type="button" class="secondary" onclick="showStep(2)">Back</button><button class="primary">Create challenge</button></div></div>
 </form></div></div>
 
 <div class="backdrop" id="dlg" onclick="if(event.target===this)closeDlg()"><div class="modal" id="dlgBody"></div></div>
@@ -131,6 +150,23 @@ const findC=id=>data.find(x=>x.id===id);
 function statsFor(uid){let d=0,m=0;data.forEach(c=>c.people.forEach(p=>{if(uid&&p.user_id===uid){d+=cnt(p);m+=pmins(p)}}));return{d,m}}
 /* 30 / 60 / 90 / 120 min with odds 4 : 3 : 2 : 1 */
 function pick(){const r=Math.random()*10;return r<4?30:r<7?60:r<9?90:120}
+/* Reading Quest pool: the first task is fixed, the other 14 open at random and never repeat. {prev} = the book from the previous task. */
+const TASKS={start:'Read any book you like',
+ lastletter:'A book that starts with the last letter of the title of {prev}',
+ authorletter:'A book by an author whose name starts with the same letter as the author of {prev}',
+ genre:'A book in the same genre as {prev}',
+ year:'A book published in the same year as {prev}',
+ words:'A book with the same number of words in the title as {prev}',
+ sameauthor:'A book by the same author as {prev}',
+ titleletter:'A book whose title starts with the same first letter as {prev}',
+ country:'A book by an author from the same country as the author of {prev}',
+ rating:'A book with the same star rating as {prev}',
+ similartitle:'A book with a similar title (meaning or words) to {prev}',
+ setting:'A book set in a similar setting as {prev} (woods, suburbia, hospital...)',
+ cover:'A book with the same colour on the front cover as {prev}',
+ price:'A book that costs the same to buy as {prev}',
+ othercountry:'A book by an author from a different country than the author of {prev}'};
+const qsel={},creating={};
 function refresh(){render();if($('detail').classList.contains('active'))detail()}
 
 /* ---- Login ---- */
@@ -153,49 +189,62 @@ let timer;const later=()=>{clearTimeout(timer);timer=setTimeout(load,300)};
 
 /* ---- Load everything and keep it in sync ---- */
 async function load(){
- const [a,b,c]=await Promise.all([
+ const [a,b,c,d]=await Promise.all([
   sb.from('challenges').select('*').order('created_at',{ascending:false}),
   sb.from('challenge_participants').select('*').order('id'),
-  sb.from('challenge_entries').select('*')]);
- const err=a.error||b.error||c.error;
+  sb.from('challenge_entries').select('*'),
+  sb.from('quest_steps').select('*').order('position')]);
+ const err=a.error||b.error||c.error||d.error;
  if(err){toast('Could not load data: '+err.message);return}
- data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,
-  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{}}))}));
+ data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,kind:ch.kind||'time',size:ch.quest_size||0,
+  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[]}))}));
  c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,done:e.minutes_done||(e.completed?e.duration_minutes:0),started:e.timer_started_at,completed:e.completed}});
+ d.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.steps.push({id:x.id,position:x.position,key:x.task_key,title:x.book_title||'',author:x.book_author||'',done:!!x.done})});
  refresh()}
 
 /* ---- Navigation & modals ---- */
 function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
 document.querySelectorAll('.nav').forEach(x=>x.onclick=()=>showPage(x.dataset.page));
-function openModal(){$('backdrop').classList.add('open')}function closeModal(){$('backdrop').classList.remove('open')}
+function openModal(){startWizard();$('backdrop').classList.add('open')}function closeModal(){$('backdrop').classList.remove('open')}
 function openDlg(h){$('dlgBody').innerHTML=h;$('dlg').classList.add('open')}function closeDlg(){$('dlg').classList.remove('open')}
 
-/* ---- Create challenge ---- */
-const names=()=>$('participants').value.split(',').map(x=>x.trim()).filter(Boolean);
-function punFields(){const old=[...document.querySelectorAll('.pun')].map(i=>i.value),n=names();
- $('punFields').innerHTML=n.length>1?n.map((x,i)=>`<div class="field"><label>Punishment for ${esc(x)} if they lose</label><input class="pun" maxlength="120" placeholder="e.g. buys the winner a coffee" value="${esc(old[i]||'')}"></div>`).join(''):''}
-function resetForm(){$('form').reset();$('participants').value=profiles.map(p=>p.name).join(', ');$('start').value=iso(new Date());$('end').value=addDays($('start').value,6);punFields()}
+/* ---- Create challenge (3 steps) ---- */
+let wiz={kind:null,type:null};
+function showStep(n){[1,2,3].forEach(i=>$('st'+i).hidden=i!==n)}
+function startWizard(){wiz={kind:null,type:null};$('form').reset();$('start').value=iso(new Date());$('end').value=addDays($('start').value,6);showStep(1)}
+function resetForm(){startWizard()}
+function pickKind(k){wiz.kind=k;showStep(2)}
+const chosen=()=>wiz.type==='personal'?[myId]:[...document.querySelectorAll('.pbox:checked')].map(b=>b.value);
+function pickType(t){wiz.type=t;
+ $('partWrap').hidden=t!=='shared';
+ $('partBoxes').innerHTML=profiles.map(p=>`<label class="pcheck"><input type="checkbox" class="pbox" value="${p.user_id}" checked ${p.user_id===myId?'disabled':''} onchange="punFields()"> ${esc(p.name)}${p.user_id===myId?' (you)':''}</label>`).join('');
+ $('timeFields').hidden=wiz.kind!=='time';$('questFields').hidden=wiz.kind!=='quest';
+ punFields();showStep(3)}
+function punFields(){const old=[...document.querySelectorAll('.pun')].map(i=>i.value),ids=wiz.kind==='time'?chosen():[];
+ $('punFields').innerHTML=ids.length>1?ids.map((u,i)=>{const pr=profiles.find(x=>x.user_id===u);return`<div class="field"><label>Punishment for ${esc(pr.name)} if they lose</label><input class="pun" maxlength="120" placeholder="e.g. buys the winner a coffee" value="${esc(old[i]||'')}"></div>`}).join(''):''}
 $('start').onchange=()=>{if($('start').value)$('end').value=addDays($('start').value,6)};
-$('type').onchange=()=>{$('participants').value=$('type').value==='personal'&&me?me.name:profiles.map(p=>p.name).join(', ');punFields()};
 $('form').onsubmit=async e=>{e.preventDefault();
- const n=names(),s=$('start').value,en=$('end').value;
- if(!n.length)return toast('Please add a participant.');
- if(en<s)return toast('End date must be after start date.');
- if(Math.round((dt(en)-dt(s))/864e5)>30)return toast('Up to 31 days, please.');
+ const kind=wiz.kind,ids=chosen();let s,en,size=null;
+ if(wiz.type==='shared'&&ids.length<2)return toast('Pick at least two participants.');
+ if(kind==='time'){s=$('start').value;en=$('end').value;
+  if(!s||!en)return toast('Please choose the dates.');
+  if(en<s)return toast('End date must be after start date.');
+  if(Math.round((dt(en)-dt(s))/864e5)>30)return toast('Up to 31 days, please.')}
+ else{s=en=iso(new Date());size=parseInt($('qsize').value,10)}
  const pn=[...document.querySelectorAll('.pun')].map(i=>i.value.trim());
- const r1=await sb.from('challenges').insert({title:$('title').value.trim(),description:$('description').value.trim(),type:$('type').value,start_date:s,end_date:en}).select().single();
+ const r1=await sb.from('challenges').insert({title:$('title').value.trim(),description:$('description').value.trim(),type:wiz.type,kind,quest_size:size,start_date:s,end_date:en}).select().single();
  if(r1.error)return toast('Could not create: '+r1.error.message);
- const rows=n.map((name,i)=>{const pr=profiles.find(x=>x.name.toLowerCase()===name.toLowerCase());return{challenge_id:r1.data.id,name:pr?pr.name:name,user_id:pr?pr.user_id:null,punishment:n.length>1?(pn[i]||''):''}});
+ const rows=ids.map((u,i)=>{const pr=profiles.find(x=>x.user_id===u);return{challenge_id:r1.data.id,name:pr.name,user_id:u,punishment:kind==='time'&&ids.length>1?(pn[i]||''):''}});
  const r2=await sb.from('challenge_participants').insert(rows);
  if(r2.error)return toast('Could not add participants: '+r2.error.message);
- await load();closeModal();resetForm();toast('Your challenge is ready!');openChallenge(r1.data.id)};
+ await load();closeModal();startWizard();toast('Your challenge is ready!');openChallenge(r1.data.id)};
 
 /* ---- Lists ---- */
-function summary(c){const r=c.result;if(!r)return'';const x=r.counts[0];if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
-function card(c){const n=dayList(c).length;
- const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const pc=pct(c,p);
-  return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${pc}%</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
- return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?'done':''}">${c.finished?'FINISHED':'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${fmt(c.start)} — ${fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} days</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
+function summary(c){const r=c.result;if(!r)return'';const x=r.counts[0];if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
+function card(c){const q=c.kind==='quest',n=q?c.size:dayList(c).length;
+ const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=q?p.steps.filter(x=>x.done).length:0,pc=q?(n?Math.round(k/n*100):0):pct(c,p),label=q?`${k} / ${n}`:`${pc}%`;
+  return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${label}</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
+ return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?'done':''}">${c.finished?'FINISHED':'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${q?'tasks':'days'}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
 const empty=s=>`<div class="empty"><strong>${s}</strong>Create a challenge and let the little wins begin.</div>`;
 function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.finished),my=statsFor(myId),other=profiles.find(p=>p.user_id!==myId),os=other?statsFor(other.user_id):null;
  $('activeCount').textContent=act.length;$('doneCount').textContent=my.d;$('focusTime').textContent=fm(my.m);
@@ -212,11 +261,12 @@ function openChallenge(id){current=id;showPage('detail');detail()}
 function resultHTML(c){const r=c.result;let t;
  const one=x=>x.pct!==undefined?`${esc(x.name)} ${x.pct}%`:`${esc(x.name)} ${x.n}/${r.n}`,x0=r.counts[0];
  const line=r.counts.map(one).join(' · ');
- if(r.solo)t=`<h2>Challenge complete</h2><p>${x0.pct!==undefined?x0.pct+'% of the planned time':x0.n+' of '+r.n+' days'} completed. Well done!</p>`;
+ if(r.quest)t=`<h2>Quest finished</h2><p>Every path is saved in the archive.</p>`;
+ else if(r.solo)t=`<h2>Challenge complete</h2><p>${x0.pct!==undefined?x0.pct+'% of the planned time':x0.n+' of '+r.n+' days'} completed. Well done!</p>`;
  else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same total result, so no punishment this time.</p>`;
  else t=`<h2>Winner: ${r.winners.map(esc).join(' &amp; ')}!</h2>`+r.losers.map(l=>`<p><b>${esc(l.name)}</b>’s punishment: ${l.punishment?esc(l.punishment):'none was set'}</p>`).join('');
  return `<div class="result">${t}<div class="meta" style="margin-top:10px">${line}</div></div>`}
-function detail(){const c=findC(current);if(!c)return;const ds=dayList(c);
+function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);const ds=dayList(c);
  let h=`<div class="eyebrow">${c.type.toUpperCase()} CHALLENGE</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little progress, one day at a time.')}</p><p class="meta" style="margin-top:6px">${fmt(c.start)} — ${fmt(c.end)}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  else if(c.people.some(p=>p.punishment))h+=`<div class="chips">${c.people.filter(p=>p.punishment).map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
@@ -254,14 +304,58 @@ async function del(id){if(!confirm('Delete this challenge for good?'))return;
  await load();showPage('challenges')}
 
 /* ---- Finish challenge ---- */
-function askFinish(id){const c=findC(id);
+function askFinish(id){const c=findC(id);if(c.kind==='quest')return askFinishQuest(c);
  openDlg(`<h2>Finish this challenge?</h2><p>We will compare the total result of each participant and move the challenge to the archive. Days nobody set a time for count as 60 minutes. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${pct(c,p,true)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
-async function finish(id){const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs};
+async function finish(id){if(findC(id).kind==='quest')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs};
  if(cs.length<2)r.solo=true;
  else{const mx=Math.max(...cs.map(x=>x.pct)),mn=Math.min(...cs.map(x=>x.pct));
   if(mx===mn)r.tie=true;
   else{r.winners=cs.filter(x=>x.pct===mx).map(x=>x.name);r.losers=cs.filter(x=>x.pct===mn).map(x=>({name:x.name,punishment:x.punishment}))}}
  const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',id);
+ if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
+ c.finished=true;c.result=r;refresh();
+ openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
+
+/* ---- Reading Quest ---- */
+function taskText(p,s){const prev=p.steps.find(x=>x.position===s.position-1),ref=prev?`«${prev.title}»${prev.author?' by '+prev.author:''}`:'the previous book';return (TASKS[s.key]||'A book of your choice').replace('{prev}',ref)}
+function qpick(cid,pid){qsel[cid]=pid;detail()}
+function questDetail(c){
+ const mineP=c.people.find(p=>p.user_id===myId),sel=c.people.find(p=>p.id===qsel[c.id])||mineP||c.people[0],size=c.size;
+ if(mineP&&!c.finished&&!mineP.steps.length&&!creating[mineP.id]){creating[mineP.id]=1;
+  sb.from('quest_steps').insert({challenge_id:c.id,participant_id:mineP.id,position:1,task_key:'start'}).then(r=>{if(r.error)toast('Could not start the quest: '+r.error.message);else load()})}
+ const steps=[...sel.steps].sort((a,b)=>a.position-b.position),doneN=steps.filter(x=>x.done).length,cur=steps.find(x=>!x.done),isMine=sel.user_id===myId;
+ let h=`<div class="eyebrow">${c.type.toUpperCase()} · READING QUEST</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'One book at a time, one surprise at a time.')}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
+ if(c.finished&&c.result)h+=resultHTML(c);
+ if(c.people.length>1)h+=`<div class="chips">${c.people.map(p=>`<button class="pill ${p.id===sel.id?'on':''}" onclick="qpick(${c.id},${p.id})">${esc(p.name)}${p.user_id===myId?' (you)':''} · ${p.steps.filter(x=>x.done).length}/${size}</button>`).join('')}</div>`;
+ const cols=innerWidth<600?3:5;let path='';
+ for(let r=0;r*cols<size;r++){path+=`<div class="qrow ${r%2?'rtl':'ltr'}" style="--c:${cols}">`;
+  for(let i=r*cols;i<Math.min(size,(r+1)*cols);i++){const x=steps.find(y=>y.position===i+1),st=x?(x.done?'done':'open'):'locked',hn=i+1<size&&(i+1)%cols!==0,dn=(i+1)%cols===0&&i+1<size;
+   path+=`<div class="sq ${st}${hn?' hn':''}${dn?' dn':''}"><span class="n">${i+1}</span><span class="ic">${st==='done'?'✓':st==='open'?'★':'🔒'}</span></div>`}
+  path+='</div>'}
+ h+=`<div class="qpath">${path}</div>`;
+ if(size&&doneN>=size)h+=`<div class="result"><h2>Quest complete! 🎉</h2><p>${esc(sel.name)} finished all ${size} tasks.</p></div>`;
+ else if(cur)h+=`<div class="result"><div class="meta">TASK ${cur.position} OF ${size}</div><h2 style="font-size:20px;margin-top:6px">${esc(taskText(sel,cur))}</h2>${isMine&&!c.finished?`<button class="primary" style="margin-top:10px" onclick="questDone(${c.id},${sel.id},${cur.id})">Done</button>`:`<p class="meta" style="margin-top:8px">Only ${esc(sel.name)} can complete this task.</p>`}</div>`;
+ else h+=`<div class="result"><h2>Not started yet</h2><p>${esc(sel.name)} has not opened the quest yet.</p></div>`;
+ const hist=steps.filter(x=>x.done);
+ if(hist.length)h+=`<div class="tablewrap" style="padding:6px 18px"><div class="hist">${hist.map(x=>`<div class="hrow"><b>${x.position}.</b><div><div>${esc(taskText(sel,x))}</div><div class="meta">«${esc(x.title)}»${x.author?' — '+esc(x.author):''}</div></div></div>`).join('')}</div></div>`;
+ if(!c.finished)h+=`<div class="finishrow"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
+ $('detailContent').innerHTML=h}
+function questDone(cid,pid,sid){openDlg(`<h2>Task completed!</h2><p>Which book did you read?</p><div class="field"><label for="qt">Book title</label><input id="qt" maxlength="120"></div><div class="field"><label for="qa">Author</label><input id="qa" maxlength="80"></div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Cancel</button><button class="primary" onclick="confirmQuestDone(${cid},${pid},${sid})">Save</button></div>`);setTimeout(()=>$('qt').focus(),50)}
+async function confirmQuestDone(cid,pid,sid){const t=$('qt').value.trim(),a=$('qa').value.trim();if(!t)return toast('Please enter the book title.');
+ const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),st=p&&p.steps.find(x=>x.id===sid);closeDlg();
+ if(!st||p.user_id!==myId||c.finished||st.done)return;
+ st.done=true;st.title=t;st.author=a;refresh();
+ const r=await sb.from('quest_steps').update({done:true,book_title:t,book_author:a}).eq('id',sid);
+ if(r.error){toast('Could not save: '+r.error.message);await load();return}
+ if(st.position<c.size){const used=p.steps.map(x=>x.key),pool=Object.keys(TASKS).filter(k=>k!=='start'&&!used.includes(k));
+  if(pool.length){const key=pool[Math.floor(Math.random()*pool.length)];
+   const r2=await sb.from('quest_steps').insert({challenge_id:cid,participant_id:pid,position:st.position+1,task_key:key});
+   if(r2.error)toast('Could not open the next task: '+r2.error.message);else toast('A new task is open!')}}
+ else toast('Quest complete! 🎉');
+ await load()}
+function askFinishQuest(c){openDlg(`<h2>Finish this quest?</h2><p>The quest moves to the archive with everyone’s progress. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${p.steps.filter(x=>x.done).length} / ${c.size}</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${c.id})">Yes, finish</button></div>`)}
+async function finishQuest(c){const r={quest:true,n:c.size,counts:c.people.map(p=>({name:p.name,n:p.steps.filter(x=>x.done).length}))};
+ const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',c.id);
  if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
  c.finished=true;c.result=r;refresh();
  openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
