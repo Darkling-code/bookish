@@ -71,12 +71,22 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 .pill{border:1px solid #ffffff2a;background:#ffffff14;color:var(--cream);border-radius:20px;padding:8px 14px;font-size:12px;font-weight:600}.pill.on{background:var(--cream);color:var(--bur)}
 .hist{display:grid}.hrow{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #e6dcc4;font-size:13px}.hrow:last-child{border-bottom:0}.hrow>b{color:var(--bur)}
 @media(max-width:600px){.qrow{gap:14px;margin-bottom:14px}.sq.hn::after{width:14px}.sq.dn::before{height:14px}.sq .lb{font-size:10px;padding:0 4px 5px}}
+.dicebox{display:grid;justify-items:center;margin:4px 0 22px}.dice{display:flex;gap:38px;justify-content:center;perspective:700px;margin:22px 0 18px;height:70px}
+.cube{width:64px;height:64px;position:relative;transform-style:preserve-3d}
+.face{position:absolute;inset:0;border-radius:12px;background:var(--cream);border:1px solid #cdbf9f;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:9px}
+.face i{border-radius:50%;margin:2px}.face i.on{background:var(--bur)}
+.f1{transform:translateZ(32px)}.f2{transform:rotateY(90deg) translateZ(32px)}.f3{transform:rotateX(90deg) translateZ(32px)}.f4{transform:rotateX(-90deg) translateZ(32px)}.f5{transform:rotateY(-90deg) translateZ(32px)}.f6{transform:rotateY(180deg) translateZ(32px)}
+.board{display:grid;grid-template-columns:26px repeat(6,1fr);gap:6px}.bh{display:grid;place-items:center;color:var(--soft);font-weight:700;font-size:13px}
+.bc{position:relative;display:grid;place-items:center;min-height:78px;padding:5px;border-radius:10px;background:#ffffff12;border:1px solid #ffffff26;color:#d8e0d2;font-size:10.5px;line-height:1.2;text-align:center;cursor:pointer}
+.bc.done{background:var(--cream);color:#2f5a2b;border-color:var(--cream)}.bc.done::after{content:'✓';position:absolute;top:3px;right:6px;font-size:12px;font-weight:700}
+.bc.open{background:var(--bur);color:var(--cream);border:2px solid #e9b8c2;animation:pulse 1.4s infinite}@keyframes pulse{50%{box-shadow:0 0 0 6px #e9b8c244}}
+@media(max-width:600px){.bc{min-height:44px;padding:2px}.bc span{display:none}.bc::before{content:attr(data-n);font-size:10px;opacity:.75}.board{gap:4px}.dice{gap:30px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
- <div class="brand"><div class="mark">b.</div><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v5</div></div></div>
+ <div class="brand"><div class="mark">b.</div><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v6</div></div></div>
  <div><div class="navlabel">Workspace</div><nav>
   <button class="nav active" data-page="dashboard">⌂ &nbsp;Dashboard</button><button class="nav" data-page="challenges">▤ &nbsp;Challenges</button><button class="nav" data-page="progress">◷ &nbsp;Progress</button><button class="nav" data-page="archive">▧ &nbsp;Archive</button>
  </nav></div>
@@ -100,7 +110,7 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 
 <div class="backdrop" id="backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><form id="form">
 <div id="st1"><h2>New challenge</h2><p>Step 1 of 3 — what kind of challenge?</p>
- <div class="choices"><button type="button" class="choice" onclick="pickKind('time')"><b>Reading Time</b><span>A random reading time for every day, with progress in minutes.</span></button><button type="button" class="choice" onclick="pickKind('quest')"><b>Reading Quest</b><span>A chain of book tasks. Each next task opens at random.</span></button><div class="choice soon"><b>More types</b><span>Coming soon</span></div></div>
+ <div class="choices"><button type="button" class="choice" onclick="pickKind('time')"><b>Reading Time</b><span>A random reading time for every day, with progress in minutes.</span></button><button type="button" class="choice" onclick="pickKind('quest')"><b>Reading Quest</b><span>A chain of book tasks. Each next task opens at random.</span></button><button type="button" class="choice" onclick="pickKind('dice')"><b>Dice Game</b><span>Roll two dice and land on a task from a 6×6 board. Complete a line for bingo.</span></button><div class="choice soon"><b>More types</b><span>Coming soon</span></div></div>
  <div class="modalactions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button></div></div>
 <div id="st2" hidden><h2>Who is it for?</h2><p>Step 2 of 3 — choose a category</p>
  <div class="choices"><button type="button" class="choice" onclick="pickType('shared')"><b>Shared</b><span>Several people, everyone has their own progress.</span></button><button type="button" class="choice" onclick="pickType('personal')"><b>Personal</b><span>Just you. Others can look, but not interact.</span></button></div>
@@ -143,6 +153,11 @@ function dayList(c){const a=[];let s=c.start;while(s<=c.end&&a.length<31){a.push
 const eDone=e=>e.done>=e.duration;
 const cnt=p=>Object.values(p.entries).filter(eDone).length;
 const pmins=p=>Object.values(p.entries).reduce((m,e)=>m+e.done,0);
+function cellsDone(c,p){
+  return c.kind==='quest'
+    ? p.steps.filter(x=>x.done).length
+    : p.rolls.filter(x=>x.done).length;
+}
 /* planned time: rolled days use their rolled duration; past days that nobody rolled count as 60 min (the average of the 4:3:2:1 odds) */
 function planned(c,p,all){const t=iso(new Date());return dayList(c).reduce((s,k)=>{const e=p.entries[k];return s+(e?e.duration:(all||c.finished||k<t?60:0))},0)}
 function pct(c,p,all){const pl=planned(c,p,all),d=Object.values(p.entries).reduce((s,e)=>s+Math.min(e.done,e.duration),0);return pl?Math.round(d/pl*1000)/10:0}
@@ -191,17 +206,19 @@ let timer;const later=()=>{clearTimeout(timer);timer=setTimeout(load,300)};
 
 /* ---- Load everything and keep it in sync ---- */
 async function load(){
- const [a,b,c,d]=await Promise.all([
+ const [a,b,c,d,f]=await Promise.all([
   sb.from('challenges').select('*').order('created_at',{ascending:false}),
   sb.from('challenge_participants').select('*').order('id'),
   sb.from('challenge_entries').select('*'),
-  sb.from('quest_steps').select('*').order('position')]);
- const err=a.error||b.error||c.error||d.error;
+  sb.from('quest_steps').select('*').order('position'),
+  sb.from('dice_rolls').select('*')]);
+ const err=a.error||b.error||c.error||d.error||f.error;
  if(err){toast('Could not load data: '+err.message);return}
  data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,kind:ch.kind||'time',size:ch.quest_size||0,
-  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[]}))}));
+  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[],rolls:[]}))}));
  c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,done:e.minutes_done||(e.completed?e.duration_minutes:0),started:e.timer_started_at,completed:e.completed}});
  d.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.steps.push({id:x.id,position:x.position,key:x.task_key,title:x.book_title||'',author:x.book_author||'',done:!!x.done})});
+ f.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.rolls.push({id:x.id,row:x.row_no,col:x.col_no,title:x.book_title||'',author:x.book_author||'',done:!!x.done})});
  refresh()}
 
 /* ---- Navigation & modals ---- */
@@ -232,7 +249,7 @@ $('form').onsubmit=async e=>{e.preventDefault();
   if(!s||!en)return toast('Please choose the dates.');
   if(en<s)return toast('End date must be after start date.');
   if(Math.round((dt(en)-dt(s))/864e5)>30)return toast('Up to 31 days, please.')}
- else{s=en=iso(new Date());size=parseInt($('qsize').value,10)}
+ else{s=en=iso(new Date());size=kind==='quest'?parseInt($('qsize').value,10):36}
  const pn=[...document.querySelectorAll('.pun')].map(i=>i.value.trim());
  const r1=await sb.from('challenges').insert({title:$('title').value.trim(),description:$('description').value.trim(),type:wiz.type,kind,quest_size:size,start_date:s,end_date:en}).select().single();
  if(r1.error)return toast('Could not create: '+r1.error.message);
@@ -242,11 +259,11 @@ $('form').onsubmit=async e=>{e.preventDefault();
  await load();closeModal();startWizard();toast('Your challenge is ready!');openChallenge(r1.data.id)};
 
 /* ---- Lists ---- */
-function summary(c){const r=c.result;if(!r)return'';const x=r.counts[0];if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
-function card(c){const q=c.kind==='quest',n=q?c.size:dayList(c).length;
- const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=q?p.steps.filter(x=>x.done).length:0,pc=q?(n?Math.round(k/n*100):0):pct(c,p),label=q?`${k} / ${n}`:`${pc}%`;
+function summary(c){const r=c.result;if(!r)return'';const x=r.counts[0];if(r.quest)return r.dice?'Game finished':'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
+function card(c){const q=c.kind==='quest',dd=c.kind==='dice',g=q||dd,n=g?c.size:dayList(c).length;
+ const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=g?cellsDone(c,p):0,pc=g?(n?Math.round(k/n*100):0):pct(c,p),label=g?`${k} / ${n}`:`${pc}%`;
   return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${label}</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
- return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?'done':''}">${c.finished?'FINISHED':'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${q?(n===1?'task':'tasks'):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
+ return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?'done':''}">${c.finished?'FINISHED':'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':dd?'Dice Game':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${g?(n===1?'task':(dd?'cells':'tasks')):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
 const empty=s=>`<div class="empty"><strong>${s}</strong>Create a challenge and let the little wins begin.</div>`;
 function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.finished),my=statsFor(myId),other=profiles.find(p=>p.user_id!==myId),os=other?statsFor(other.user_id):null;
  $('activeCount').textContent=act.length;$('doneCount').textContent=my.d;$('focusTime').textContent=fm(my.m);
@@ -263,12 +280,12 @@ function openChallenge(id){current=id;showPage('detail');detail()}
 function resultHTML(c){const r=c.result;let t;
  const one=x=>x.pct!==undefined?`${esc(x.name)} ${x.pct}%`:`${esc(x.name)} ${x.n}/${r.n}`,x0=r.counts[0];
  const line=r.counts.map(one).join(' · ');
- if(r.quest)t=`<h2>Quest finished</h2><p>Every path is saved in the archive.</p>`;
+ if(r.quest)t=`<h2>${r.dice?'Game finished':'Quest finished'}</h2><p>Every path is saved in the archive.</p>`;
  else if(r.solo)t=`<h2>Challenge complete</h2><p>${x0.pct!==undefined?x0.pct+'% of the planned time':x0.n+' of '+r.n+' days'} completed. Well done!</p>`;
  else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same total result, so no punishment this time.</p>`;
  else t=`<h2>Winner: ${r.winners.map(esc).join(' &amp; ')}!</h2>`+r.losers.map(l=>`<p><b>${esc(l.name)}</b>’s punishment: ${l.punishment?esc(l.punishment):'none was set'}</p>`).join('');
  return `<div class="result">${t}<div class="meta" style="margin-top:10px">${line}</div></div>`}
-function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);const ds=dayList(c);
+function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);if(c.kind==='dice')return diceDetail(c);const ds=dayList(c);
  let h=`<div class="eyebrow">${c.type.toUpperCase()} CHALLENGE</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little progress, one day at a time.')}</p><p class="meta" style="margin-top:6px">${fmt(c.start)} — ${fmt(c.end)}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  else if(c.people.some(p=>p.punishment))h+=`<div class="chips">${c.people.filter(p=>p.punishment).map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
@@ -306,7 +323,7 @@ async function del(id){if(!confirm('Delete this challenge for good?'))return;
  await load();showPage('challenges')}
 
 /* ---- Finish challenge ---- */
-function askFinish(id){const c=findC(id);if(c.kind==='quest')return askFinishQuest(c);
+function askFinish(id){const c=findC(id);if(c.kind==='quest'||c.kind==='dice')return askFinishQuest(c);
  openDlg(`<h2>Finish this challenge?</h2><p>We will compare the total result of each participant and move the challenge to the archive. Days nobody set a time for count as 60 minutes. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${pct(c,p,true)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
 async function finish(id){if(findC(id).kind==='quest')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs};
  if(cs.length<2)r.solo=true;
@@ -355,12 +372,73 @@ async function confirmQuestDone(cid,pid,sid){const t=$('qt').value.trim(),a=$('q
    if(r2.error)toast('Could not open the next task: '+r2.error.message);else toast('A new task is open!')}}
  else toast('Quest complete! 🎉');
  await load()}
-function askFinishQuest(c){openDlg(`<h2>Finish this quest?</h2><p>The quest moves to the archive with everyone’s progress. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${p.steps.filter(x=>x.done).length} / ${c.size}</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${c.id})">Yes, finish</button></div>`)}
-async function finishQuest(c){const r={quest:true,n:c.size,counts:c.people.map(p=>({name:p.name,n:p.steps.filter(x=>x.done).length}))};
+function askFinishQuest(c){openDlg(`<h2>Finish this ${c.kind==='dice'?'game':'quest'}?</h2><p>It moves to the archive with everyone’s progress. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${cellsDone(c,p)} / ${c.size}</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${c.id})">Yes, finish</button></div>`)}
+async function finishQuest(c){const r={quest:true,dice:c.kind==='dice',n:c.size,counts:c.people.map(p=>({name:p.name,n:cellsDone(c,p)}))};
  const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',c.id);
  if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
  c.finished=true;c.result=r;refresh();
  openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
+
+/* ---- Dice Game: roll two dice (row + column) on a 6x6 board of book tasks ---- */
+const DICE=[
+ ['Book recommended to you','Book with white on the cover','Book from your favorite genre','Book with blue on the cover','Read a banned book','Book given to you as a gift'],
+ ['Book with purple on the cover','Book with less than 200 pages','Book with green on the cover','Book you know you’ll like','Book that is part of a series','Book from a bestseller list'],
+ ['Book you keep meaning to read, but haven’t yet','Book set in the present','Book that’s been on your TBR list for over a year','Book with red on the cover','Pick a book based solely on the cover','Book with more than 400 pages'],
+ ['Book from your least read genre','Book you think you might not like','Book that’s been made into a TV show or movie','A holiday (any holiday) themed book','Book set in the past','Book with pink on the cover'],
+ ['Book with orange on the cover','Reread a book you loved as a kid','Book with brown on the cover','Book with between 200-400 pages','Book with yellow on the cover','Reread a classic you had to read in school'],
+ ['Last book added to your TBR list','Book with black on the cover','Book set in the future','Pick a book based solely on the title','Stand alone book (not part of a series)','Random book']];
+const ORI={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]},PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const ROLL_MS=3000;let rolling=false;
+function lineCount(p){const d=new Set(p.rolls.filter(x=>x.done).map(x=>x.row+'-'+x.col)),k=[1,2,3,4,5,6];let n=0;
+ k.forEach(i=>{if(k.every(j=>d.has(i+'-'+j)))n++;if(k.every(j=>d.has(j+'-'+i)))n++});
+ if(k.every(i=>d.has(i+'-'+i)))n++;if(k.every(i=>d.has(i+'-'+(7-i))))n++;return n}
+function cubeHTML(v,id){const o=ORI[v];return `<div class="cube" id="${id}" style="transform:rotateX(${o[0]}deg) rotateY(${o[1]}deg)">${[1,2,3,4,5,6].map(f=>`<div class="face f${f}">${[0,1,2,3,4,5,6,7,8].map(i=>`<i class="${PIPS[f].includes(i)?'on':''}"></i>`).join('')}</div>`).join('')}</div>`}
+function spin(el,v){const o=ORI[v];el.style.transition='none';el.style.transform='rotateX(0deg) rotateY(0deg)';void el.offsetWidth;
+ el.style.transition=`transform ${ROLL_MS}ms cubic-bezier(.12,.6,.2,1)`;el.style.transform=`rotateX(${o[0]+720}deg) rotateY(${o[1]+1080}deg)`}
+function peek(r,j){const e=$('peek');if(e)e.textContent=r+' · '+j+': '+DICE[r-1][j-1]}
+function diceDetail(c){
+ if(rolling)return;
+ const mineP=c.people.find(p=>p.user_id===myId),sel=c.people.find(p=>p.id===qsel[c.id])||mineP||c.people[0],isMine=sel.user_id===myId;
+ const rolls=sel.rolls,open=rolls.find(x=>!x.done),doneN=rolls.filter(x=>x.done).length,last=open||[...rolls].sort((a,b)=>b.id-a.id)[0];
+ let h=`<div class="eyebrow">${c.type.toUpperCase()} · DICE GAME</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'Roll, read, repeat.')}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
+ if(c.finished&&c.result)h+=resultHTML(c);
+ if(c.people.length>1)h+=`<div class="chips">${c.people.map(p=>`<button class="pill ${p.id===sel.id?'on':''}" onclick="qpick(${c.id},${p.id})">${esc(p.name)}${p.user_id===myId?' (you)':''} · ${p.rolls.filter(x=>x.done).length}/36</button>`).join('')}</div>`;
+ const canRoll=isMine&&!c.finished&&!open&&doneN<36;
+ h+=`<div class="dicebox"><div class="dice">${cubeHTML(last?last.row:1,'cubeR')}${cubeHTML(last?last.col:1,'cubeC')}</div><div class="meta" style="text-align:center;margin-bottom:12px">${open?'Row '+open.row+' · Column '+open.col:'Row · Column'}</div>${canRoll?`<button class="primary" id="rollBtn" onclick="rollDice(${c.id},${sel.id})">Roll the dice</button>`:''}</div>`;
+ h+='<div class="board"><div class="bh"></div>'+[1,2,3,4,5,6].map(j=>`<div class="bh">${j}</div>`).join('');
+ for(let r=1;r<=6;r++){h+=`<div class="bh">${r}</div>`;
+  for(let j=1;j<=6;j++){const x=rolls.find(y=>y.row===r&&y.col===j);h+=`<div class="bc ${x?(x.done?'done':'open'):''}" data-n="${r}·${j}" onclick="peek(${r},${j})"><span>${esc(DICE[r-1][j-1])}</span></div>`}}
+ h+='</div><div class="meta" id="peek" style="min-height:18px;margin:10px 2px">Tap a cell to read its task.</div>';
+ h+=`<div class="meta" style="margin:4px 2px 14px">${doneN} / 36 cells · ${lineCount(sel)} lines</div>`;
+ if(open)h+=`<div class="result"><div class="meta">ROW ${open.row} · COLUMN ${open.col}</div><h2 style="font-size:20px;margin-top:6px">${esc(DICE[open.row-1][open.col-1])}</h2>${isMine&&!c.finished?`<button class="primary" style="margin-top:10px" onclick="diceDone(${c.id},${sel.id},${open.id})">Done</button>`:`<p class="meta" style="margin-top:8px">Only ${esc(sel.name)} can complete this task.</p>`}</div>`;
+ const hist=rolls.filter(x=>x.done).sort((a,b)=>a.id-b.id);
+ if(hist.length)h+=`<div class="tablewrap" style="padding:6px 18px"><div class="hist">${hist.map((x,i)=>`<div class="hrow"><b>${i+1}.</b><div><div>${esc(DICE[x.row-1][x.col-1])}</div><div class="meta">«${esc(x.title)}»${x.author?' — '+esc(x.author):''}</div></div></div>`).join('')}</div></div>`;
+ if(!c.finished)h+=`<div class="finishrow"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
+ $('detailContent').innerHTML=h}
+async function rollDice(cid,pid){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid);
+ if(rolling||!p||p.user_id!==myId||c.finished||p.rolls.some(x=>!x.done))return;
+ const taken=new Set(p.rolls.map(x=>x.row+'-'+x.col)),free=[];
+ for(let r=1;r<=6;r++)for(let j=1;j<=6;j++)if(!taken.has(r+'-'+j))free.push([r,j]);
+ if(!free.length)return toast('The board is full!');
+ const pick1=free[Math.floor(Math.random()*free.length)];
+ rolling=true;const b=$('rollBtn');if(b)b.disabled=true;
+ spin($('cubeR'),pick1[0]);spin($('cubeC'),pick1[1]);
+ await new Promise(res=>setTimeout(res,ROLL_MS+250));
+ const {error}=await sb.from('dice_rolls').insert({challenge_id:cid,participant_id:pid,row_no:pick1[0],col_no:pick1[1]});
+ rolling=false;if(error)toast('Could not save the roll: '+error.message);
+ await load()}
+function diceDone(cid,pid,rid){openDlg(`<h2>Task completed!</h2><p>Which book did you read?</p><div class="field"><label for="qt">Book title</label><input id="qt" maxlength="120"></div><div class="field"><label for="qa">Author</label><input id="qa" maxlength="80"></div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Cancel</button><button class="primary" onclick="confirmDiceDone(${cid},${pid},${rid})">Save</button></div>`);setTimeout(()=>$('qt').focus(),50)}
+async function confirmDiceDone(cid,pid,rid){const t=$('qt').value.trim(),a=$('qa').value.trim();if(!t)return toast('Please enter the book title.');
+ const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),r=p&&p.rolls.find(x=>x.id===rid);closeDlg();
+ if(!r||p.user_id!==myId||c.finished||r.done)return;
+ const before=lineCount(p);r.done=true;r.title=t;r.author=a;refresh();
+ const res=await sb.from('dice_rolls').update({done:true,book_title:t,book_author:a}).eq('id',rid);
+ if(res.error){toast('Could not save: '+res.error.message);await load();return}
+ const after=lineCount(p),full=p.rolls.filter(x=>x.done).length>=36;
+ if(full)openDlg(`<h2>Board complete! 🎉</h2><p>Every cell is done. Finish the challenge?</p><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="closeDlg();askFinish(${cid})">Finish challenge</button></div>`);
+ else if(after>before)openDlg(`<h2>BINGO! 🎉</h2><p>You completed a line. Finish the challenge now, or keep playing until the whole board is filled?</p><div class="modalactions"><button class="secondary" onclick="closeDlg()">Keep playing</button><button class="primary" onclick="closeDlg();askFinish(${cid})">Finish challenge</button></div>`);
+ else toast('Done! Time for the next roll.');
+ await load()}
 
 $('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
 render();start();
