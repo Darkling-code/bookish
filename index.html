@@ -88,12 +88,21 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 @keyframes pulse{50%{box-shadow:0 0 0 6px #e9b8c244}}
 @media(max-width:600px){.bc{min-height:44px;padding:2px}.bc span{display:none}.bc::before{content:attr(data-n);font-size:10px;opacity:.75}.board{gap:4px}.dice{gap:30px}}
 .brand img.mark{width:38px;height:38px;border-radius:12px;object-fit:cover;display:block;background:none}
+.agrid{display:grid;grid-template-columns:repeat(var(--lc),1fr);gap:10px;margin:6px 0 16px}
+.lt{position:relative;aspect-ratio:3/4;border-radius:14px;background:#ffffff12;border:1px solid #ffffff26;display:grid;place-items:center;overflow:hidden;color:var(--soft)}
+.lt.can{cursor:pointer}.lt.can:hover{border-color:var(--cream)}.lt .lt-l{font:600 34px Lora,serif;line-height:1}
+.lt.full{background:var(--cream);color:#2f5a2b;border-color:var(--cream)}.lt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lt.full .lt-l{position:absolute;top:6px;left:6px;z-index:1;font-size:15px;background:var(--bur);color:var(--cream);border-radius:8px;padding:3px 8px}
+.lt .lt-t{font-size:10.5px;line-height:1.2;text-align:center;padding:0 6px;margin-top:10px;font-weight:600}
+.lt .lt-b{position:absolute;left:0;right:0;bottom:0;z-index:1;background:#000b;color:#fff;font-size:10px;line-height:1.2;padding:4px 6px;text-align:center}
+.coverprev{width:90px;border-radius:8px;margin:4px 0}.bigcover{display:block;max-width:100%;max-height:50vh;border-radius:12px;margin:0 auto 12px}
+@media(max-width:600px){.agrid{gap:7px}.lt .lt-l{font-size:26px}.lt.full .lt-l{font-size:12px;padding:2px 6px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
- <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v7</div></div></div>
+ <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v8</div></div></div>
  <div><div class="navlabel">Workspace</div><nav>
   <button class="nav active" data-page="dashboard">⌂ &nbsp;Dashboard</button><button class="nav" data-page="challenges">▤ &nbsp;Challenges</button><button class="nav" data-page="progress">◷ &nbsp;Progress</button><button class="nav" data-page="archive">▧ &nbsp;Archive</button>
  </nav></div>
@@ -117,7 +126,7 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 
 <div class="backdrop" id="backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><form id="form">
 <div id="st1"><h2>New challenge</h2><p>Step 1 of 3 — what kind of challenge?</p>
- <div class="choices"><button type="button" class="choice" onclick="pickKind('time')"><b>Reading Time</b><span>A random reading time for every day, with progress in minutes.</span></button><button type="button" class="choice" onclick="pickKind('quest')"><b>Reading Quest</b><span>A chain of book tasks. Each next task opens at random.</span></button><button type="button" class="choice" onclick="pickKind('dice')"><b>Dice Game</b><span>Roll two dice and land on a task from a 6×6 board. Complete a line for bingo.</span></button><div class="choice soon"><b>More types</b><span>Coming soon</span></div></div>
+ <div class="choices"><button type="button" class="choice" onclick="pickKind('time')"><b>Reading Time</b><span>A random reading time for every day, with progress in minutes.</span></button><button type="button" class="choice" onclick="pickKind('quest')"><b>Reading Quest</b><span>A chain of book tasks. Each next task opens at random.</span></button><button type="button" class="choice" onclick="pickKind('dice')"><b>Dice Game</b><span>Roll two dice and land on a task from a 6×6 board. Complete a line for bingo.</span></button><button type="button" class="choice" onclick="pickKind('alphabet')"><b>Alphabet Grid</b><span>Read a book for every letter of the alphabet and add its cover. Fill the whole grid first to win.</span></button><div class="choice soon"><b>More types</b><span>Coming soon</span></div></div>
  <div class="modalactions"><button type="button" class="secondary" onclick="closeModal()">Cancel</button></div></div>
 <div id="st2" hidden><h2>Who is it for?</h2><p>Step 2 of 3 — choose a category</p>
  <div class="choices"><button type="button" class="choice" onclick="pickType('shared')"><b>Shared</b><span>Several people, everyone has their own progress.</span></button><button type="button" class="choice" onclick="pickType('personal')"><b>Personal</b><span>Just you. Others can look, but not interact.</span></button></div>
@@ -126,7 +135,8 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
  <div class="field"><label for="title">Challenge name</label><input id="title" required maxlength="70" placeholder="e.g. A little daily discipline"></div>
  <div class="field"><label for="description">Description (optional)</label><textarea id="description" rows="2" placeholder="A little note about this challenge..."></textarea></div>
  <div class="field" id="partWrap"><label>Participants</label><div id="partBoxes" style="display:grid;gap:8px"></div></div>
- <div id="timeFields"><div class="two"><div class="field"><label for="start">Start date</label><input id="start" type="date"></div><div class="field"><label for="end">End date</label><input id="end" type="date"></div></div><div id="punFields"></div></div>
+ <div id="timeFields"><div class="two"><div class="field"><label for="start">Start date</label><input id="start" type="date"></div><div class="field"><label for="end">End date</label><input id="end" type="date"></div></div></div>
+ <div id="punFields"></div>
  <div id="questFields"><div class="field"><label for="qsize">Number of tasks</label><select id="qsize"><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option></select><small style="font-size:10px;color:var(--muted)">The first task is always “read any book”. The rest open at random.</small></div></div>
  <div class="modalactions"><button type="button" class="secondary" onclick="showStep(2)">Back</button><button class="primary">Create challenge</button></div></div>
 </form></div></div>
@@ -163,6 +173,7 @@ const pmins=p=>Object.values(p.entries).reduce((m,e)=>m+e.done,0);
 function cellsDone(c,p){
   return c.kind==='quest'
     ? p.steps.filter(x=>x.done).length
+    : c.kind==='alphabet' ? p.letters.length
     : p.rolls.filter(x=>x.done).length;
 }
 /* planned time: rolled days use their rolled duration; past days that nobody rolled count as 60 min (the average of the 4:3:2:1 odds) */
@@ -213,19 +224,21 @@ let timer;const later=()=>{clearTimeout(timer);timer=setTimeout(load,300)};
 
 /* ---- Load everything and keep it in sync ---- */
 async function load(){
- const [a,b,c,d,f]=await Promise.all([
+ const [a,b,c,d,f,g]=await Promise.all([
   sb.from('challenges').select('*').order('created_at',{ascending:false}),
   sb.from('challenge_participants').select('*').order('id'),
   sb.from('challenge_entries').select('*'),
   sb.from('quest_steps').select('*').order('position'),
-  sb.from('dice_rolls').select('*')]);
- const err=a.error||b.error||c.error||d.error||f.error;
+  sb.from('dice_rolls').select('*'),
+  sb.from('alphabet_entries').select('*')]);
+ const err=a.error||b.error||c.error||d.error||f.error||g.error;
  if(err){toast('Could not load data: '+err.message);return}
  data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,kind:ch.kind||'time',size:ch.quest_size||0,
-  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[],rolls:[]}))}));
+  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[],rolls:[],letters:[]}))}));
  c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,done:e.minutes_done||(e.completed?e.duration_minutes:0),started:e.timer_started_at,completed:e.completed}});
  d.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.steps.push({id:x.id,position:x.position,key:x.task_key,title:x.book_title||'',author:x.book_author||'',done:!!x.done})});
  f.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.rolls.push({id:x.id,row:x.row_no,col:x.col_no,title:x.book_title||'',author:x.book_author||'',done:!!x.done,skipped:!!x.skipped})});
+ g.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.letters.push({id:x.id,letter:x.letter,title:x.book_title||'',author:x.book_author||'',cover:x.cover_url||'',at:new Date(x.created_at).getTime()})});
  refresh()}
 
 /* ---- Navigation & modals ---- */
@@ -246,7 +259,7 @@ function pickType(t){wiz.type=t;
  $('partBoxes').innerHTML=profiles.map(p=>`<label class="pcheck"><input type="checkbox" class="pbox" value="${p.user_id}" checked ${p.user_id===myId?'disabled':''} onchange="punFields()"> ${esc(p.name)}${p.user_id===myId?' (you)':''}</label>`).join('');
  $('timeFields').hidden=wiz.kind!=='time';$('questFields').hidden=wiz.kind!=='quest';
  punFields();showStep(3)}
-function punFields(){const old=[...document.querySelectorAll('.pun')].map(i=>i.value),ids=wiz.kind==='time'?chosen():[];
+function punFields(){const old=[...document.querySelectorAll('.pun')].map(i=>i.value),ids=(wiz.kind==='time'||wiz.kind==='alphabet')?chosen():[];
  $('punFields').innerHTML=ids.length>1?ids.map((u,i)=>{const pr=profiles.find(x=>x.user_id===u);return`<div class="field"><label>Punishment for ${esc(pr.name)} if they lose</label><input class="pun" maxlength="120" placeholder="e.g. buys the winner a coffee" value="${esc(old[i]||'')}"></div>`}).join(''):''}
 $('start').onchange=()=>{if($('start').value)$('end').value=addDays($('start').value,6)};
 $('form').onsubmit=async e=>{e.preventDefault();
@@ -256,21 +269,21 @@ $('form').onsubmit=async e=>{e.preventDefault();
   if(!s||!en)return toast('Please choose the dates.');
   if(en<s)return toast('End date must be after start date.');
   if(Math.round((dt(en)-dt(s))/864e5)>30)return toast('Up to 31 days, please.')}
- else{s=en=iso(new Date());size=kind==='quest'?parseInt($('qsize').value,10):36}
+ else{s=en=iso(new Date());size=kind==='quest'?parseInt($('qsize').value,10):kind==='alphabet'?26:36}
  const pn=[...document.querySelectorAll('.pun')].map(i=>i.value.trim());
  const r1=await sb.from('challenges').insert({title:$('title').value.trim(),description:$('description').value.trim(),type:wiz.type,kind,quest_size:size,start_date:s,end_date:en}).select().single();
  if(r1.error)return toast('Could not create: '+r1.error.message);
- const rows=ids.map((u,i)=>{const pr=profiles.find(x=>x.user_id===u);return{challenge_id:r1.data.id,name:pr.name,user_id:u,punishment:kind==='time'&&ids.length>1?(pn[i]||''):''}});
+ const rows=ids.map((u,i)=>{const pr=profiles.find(x=>x.user_id===u);return{challenge_id:r1.data.id,name:pr.name,user_id:u,punishment:(kind==='time'||kind==='alphabet')&&ids.length>1?(pn[i]||''):''}});
  const r2=await sb.from('challenge_participants').insert(rows);
  if(r2.error)return toast('Could not add participants: '+r2.error.message);
  await load();closeModal();startWizard();toast('Your challenge is ready!');openChallenge(r1.data.id)};
 
 /* ---- Lists ---- */
-function summary(c){const r=c.result;if(!r)return'';if(r.abandoned)return'Challenge abandoned';const x=r.counts[0];if(r.quest&&r.dice)return r.bingo?'Challenge complete! Bingo!':'Challenge finished';if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
-function card(c){const q=c.kind==='quest',dd=c.kind==='dice',g=q||dd,n=g?c.size:dayList(c).length;
+function summary(c){const r=c.result;if(!r)return'';if(r.abandoned)return'Challenge abandoned';const x=r.counts[0];if(r.alpha&&r.solo)return'Grid complete!';if(r.quest&&r.dice)return r.bingo?'Challenge complete! Bingo!':'Challenge finished';if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
+function card(c){const q=c.kind==='quest',dd=c.kind==='dice',al=c.kind==='alphabet',g=q||dd||al,n=g?c.size:dayList(c).length;
  const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=g?cellsDone(c,p):0,pc=g?(n?Math.round(k/n*100):0):pct(c,p),label=g?`${k} / ${n}`:`${pc}%`;
   return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${label}</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
- return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?(c.result?.abandoned?'abandoned':'done'): ''}">${c.finished?(c.result?.abandoned?'ABANDONED':'FINISHED'):'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':dd?'Dice Game':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${g?(n===1?'task':(dd?'cells':'tasks')):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
+ return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?(c.result?.abandoned?'abandoned':'done'): ''}">${c.finished?(c.result?.abandoned?'ABANDONED':'FINISHED'):'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':dd?'Dice Game':al?'Alphabet Grid':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${g?(n===1?'task':(dd||al?'cells':'tasks')):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
 const empty=s=>`<div class="empty"><strong>${s}</strong>Create a challenge and let the little wins begin.</div>`;
 function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.finished),my=statsFor(myId),other=profiles.find(p=>p.user_id!==myId),os=other?statsFor(other.user_id):null;
  $('activeCount').textContent=act.length;$('doneCount').textContent=my.d;$('focusTime').textContent=fm(my.m);
@@ -294,7 +307,7 @@ function resultHTML(c){const r=c.result;let t;
  else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same total result, so no punishment this time.</p>`;
  else t=`<h2>Winner: ${r.winners.map(esc).join(' &amp; ')}!</h2>`+r.losers.map(l=>`<p><b>${esc(l.name)}</b>’s punishment: ${l.punishment?esc(l.punishment):'none was set'}</p>`).join('');
  return `<div class="result">${t}<div class="meta" style="margin-top:10px">${line}</div></div>`}
-function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);if(c.kind==='dice')return diceDetail(c);const ds=dayList(c);
+function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);if(c.kind==='dice')return diceDetail(c);if(c.kind==='alphabet')return alphaDetail(c);const ds=dayList(c);
  let h=`<div class="eyebrow">${c.type.toUpperCase()} CHALLENGE</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little progress, one day at a time.')}</p><p class="meta" style="margin-top:6px">${fmt(c.start)} — ${fmt(c.end)}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  else if(c.people.some(p=>p.punishment))h+=`<div class="chips">${c.people.filter(p=>p.punishment).map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
@@ -332,9 +345,9 @@ async function del(id){if(!confirm('Delete this challenge for good?'))return;
  await load();showPage('challenges')}
 
 /* ---- Finish challenge ---- */
-function askFinish(id){const c=findC(id);if(c.kind==='quest'||c.kind==='dice')return askFinishQuest(c);const early=iso(new Date())<c.end;
+function askFinish(id){const c=findC(id);if(c.kind==='alphabet')return askFinishAlpha(c);if(c.kind==='quest'||c.kind==='dice')return askFinishQuest(c);const early=iso(new Date())<c.end;
  openDlg(`<h2>Finish this challenge?</h2><p>${early?'You are finishing before the planned end date, so this challenge will be marked ABANDONED.':'The challenge has reached its planned end date, so it will be marked FINISHED.'} We will compare everyone’s progress and move it to the archive. Days nobody set a time for count as 60 minutes. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${pct(c,p,true)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
-async function finish(id){if(findC(id).kind==='quest'||findC(id).kind==='dice')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs,abandoned:iso(new Date())<c.end};
+async function finish(id){if(findC(id).kind==='alphabet')return finishAlpha(findC(id));if(findC(id).kind==='quest'||findC(id).kind==='dice')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs,abandoned:iso(new Date())<c.end};
  if(cs.length<2)r.solo=true;
  else{const mx=Math.max(...cs.map(x=>x.pct)),mn=Math.min(...cs.map(x=>x.pct));
   if(mx===mn)r.tie=true;
@@ -455,6 +468,62 @@ async function confirmDiceDone(cid,pid,rid){const t=$('qt').value.trim(),a=$('qa
  else if(after>before)openDlg(`<h2>BINGO! 🎉</h2><p>You completed a line. Finish the challenge now, or keep playing until the whole board is filled?</p><div class="modalactions"><button class="secondary" onclick="closeDlg()">Keep playing</button><button class="primary" onclick="closeDlg();askFinish(${cid})">Finish challenge</button></div>`);
  else toast('Done! Time for the next roll.');
  await load()}
+
+/* ---- Alphabet Grid: one book per letter, with an optional cover photo ---- */
+const LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const alphaAt=p=>p.letters.length>=26?Math.max(...p.letters.map(x=>x.at)):null;
+function shrink(file,max=600){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);
+ img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),cv=document.createElement('canvas');cv.width=Math.round(img.width*k);cv.height=Math.round(img.height*k);
+  cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);URL.revokeObjectURL(u);cv.toBlob(b=>b?res(b):rej(new Error('Could not process the image')),'image/jpeg',.78)};
+ img.onerror=()=>rej(new Error('Could not read the image'));img.src=u})}
+function alphaDetail(c){
+ const mineP=c.people.find(p=>p.user_id===myId),sel=c.people.find(p=>p.id===qsel[c.id])||mineP||c.people[0],can=sel.user_id===myId&&!c.finished,n=sel.letters.length;
+ let h=`<div class="eyebrow">${c.type.toUpperCase()} · ALPHABET GRID</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A book for every letter.')}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
+ if(c.finished&&c.result)h+=resultHTML(c);
+ if(c.people.length>1)h+=`<div class="chips">${c.people.map(p=>`<button class="pill ${p.id===sel.id?'on':''}" onclick="qpick(${c.id},${p.id})">${esc(p.name)}${p.user_id===myId?' (you)':''} · ${p.letters.length}/26</button>`).join('')}</div>`;
+ else h+='';
+ const punish=c.people.filter(p=>p.punishment);
+ if(!c.finished&&punish.length)h+=`<div class="chips">${punish.map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
+ h+=`<div class="agrid" style="--lc:${innerWidth<600?4:6}">${LETTERS.map(L=>{const e=sel.letters.find(x=>x.letter===L),click=can?`openLetter(${c.id},${sel.id},'${L}')`:(e?`viewLetter(${c.id},${sel.id},'${L}')`:'');
+  return `<div class="lt${e?' full':''}${can?' can':''}"${click?` onclick="${click}"`:''}>${e&&e.cover?`<img src="${esc(e.cover)}" alt="" loading="lazy">`:''}<span class="lt-l">${L}</span>${e&&!e.cover?`<span class="lt-t">${esc(e.title)}</span>`:''}${e&&e.cover?`<span class="lt-b">${esc(e.title)}</span>`:''}</div>`}).join('')}</div>`;
+ h+=`<div class="meta" style="margin:4px 2px 14px">${n} / 26 letters${n>=26?' · complete!':''}${can?' · tap a letter to add a book':''}</div>`;
+ if(!c.finished)h+=`<div class="finishrow"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
+ $('detailContent').innerHTML=h}
+function openLetter(cid,pid,L){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid);if(!p||p.user_id!==myId||c.finished)return;const e=p.letters.find(x=>x.letter===L);
+ openDlg(`<h2>Letter ${L}</h2><p>A book whose title starts with ${L}.</p><div class="field"><label for="al_t">Book title</label><input id="al_t" maxlength="120" value="${e?esc(e.title):''}"></div><div class="field"><label for="al_a">Author</label><input id="al_a" maxlength="80" value="${e?esc(e.author):''}"></div><div class="field"><label for="al_c">Cover photo (optional)</label><input id="al_c" type="file" accept="image/*"></div>${e&&e.cover?`<img class="coverprev" src="${esc(e.cover)}" alt="">`:''}<div class="modalactions"><button class="secondary" onclick="closeDlg()">Cancel</button><button class="primary" id="al_save" onclick="saveLetter(${cid},${pid},'${L}')">Save</button></div>`);setTimeout(()=>$('al_t').focus(),50)}
+function viewLetter(cid,pid,L){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),e=p&&p.letters.find(x=>x.letter===L);if(!e)return;
+ openDlg(`<h2>Letter ${L}</h2>${e.cover?`<img class="bigcover" src="${esc(e.cover)}" alt="">`:''}<p style="color:var(--ink);font-size:14px;margin-bottom:4px"><b>${esc(e.title)}</b></p><p>${e.author?esc(e.author):'Author not added'}</p><div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
+async function saveLetter(cid,pid,L){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid);if(!p||p.user_id!==myId||c.finished)return;
+ const t=$('al_t').value.trim(),a=$('al_a').value.trim(),f=$('al_c').files[0];
+ if(!t)return toast('Please enter the book title.');
+ const first=(t.replace(/^[^A-Za-z0-9]+/,'')[0]||'').toUpperCase();
+ if(first!==L&&!confirm('The title does not start with '+L+'. Save it anyway?'))return;
+ const btn=$('al_save');btn.disabled=true;btn.textContent='Saving…';
+ const e=p.letters.find(x=>x.letter===L);let cover=e?e.cover:'';
+ try{
+  if(f){const blob=await shrink(f),path=c.id+'/'+p.id+'-'+L+'-'+Date.now()+'.jpg',up=await sb.storage.from('covers').upload(path,blob,{contentType:'image/jpeg'});
+   if(up.error)throw up.error;cover=sb.storage.from('covers').getPublicUrl(path).data.publicUrl}
+  const row={book_title:t,book_author:a,cover_url:cover||null};
+  const r=e?await sb.from('alphabet_entries').update(row).eq('id',e.id):await sb.from('alphabet_entries').insert({challenge_id:cid,participant_id:pid,letter:L,book_title:t,book_author:a,cover_url:cover||null});
+  if(r.error)throw r.error
+ }catch(err){toast('Could not save: '+(err.message||err));btn.disabled=false;btn.textContent='Save';return}
+ closeDlg();await load();
+ const p2=findC(cid).people.find(x=>x.id===pid);
+ if(!e&&p2.letters.length>=26)openDlg(`<h2>Grid complete! 🎉</h2><p>You filled every letter. Finish the challenge to see who won?</p><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="closeDlg();askFinish(${cid})">Finish challenge</button></div>`);
+ else toast(e?'Saved!':'Letter '+L+' is filled!')}
+function askFinishAlpha(c){const any=c.people.some(p=>p.letters.length>=26);
+ openDlg(`<h2>Finish this challenge?</h2><p>${any?'Someone has filled the whole grid, so it will be marked FINISHED and the winner is whoever completed it first.':'Nobody has filled the whole grid yet, so it will be marked ABANDONED.'} It moves to the archive. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${p.letters.length} / 26 · ${Math.round(p.letters.length/26*100)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${c.id})">Yes, finish</button></div>`)}
+async function finishAlpha(c){
+ const raw=c.people.map(p=>({participant_id:p.id,name:p.name,n:p.letters.length,pct:Math.round(p.letters.length/26*100),at:alphaAt(p)}));
+ const fin=raw.filter(x=>x.at!==null).sort((a,b)=>a.at-b.at);
+ const r={alpha:true,n:26,counts:raw.map(x=>({participant_id:x.participant_id,name:x.name,n:x.n,pct:x.pct}))};
+ if(!fin.length)r.abandoned=true;
+ else if(c.people.length<2)r.solo=true;
+ else{r.winners=[fin[0].name];r.losers=c.people.filter(p=>p.id!==fin[0].participant_id).map(p=>({name:p.name,punishment:p.punishment}))}
+ const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',c.id);
+ if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
+ c.finished=true;c.result=r;refresh();
+ openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
 
 $('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
 render();start();
