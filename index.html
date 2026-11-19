@@ -97,14 +97,43 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
 .lt .lt-b{position:absolute;left:0;right:0;bottom:0;z-index:1;background:#000b;color:#fff;font-size:10px;line-height:1.2;padding:4px 6px;text-align:center}
 .coverprev{width:90px;border-radius:8px;margin:4px 0}.bigcover{display:block;max-width:100%;max-height:50vh;border-radius:12px;margin:0 auto 12px}
 @media(max-width:600px){.agrid{gap:7px}.lt .lt-l{font-size:26px}.lt.full .lt-l{font-size:12px;padding:2px 6px}}
+.advgrid{display:grid;grid-template-columns:repeat(var(--ac),1fr);gap:10px}
+.gift{background:#ffffff0f;border:1px solid #ffffff1f;border-radius:16px;padding:10px 6px 6px;display:grid;justify-items:center;gap:2px;color:var(--cream)}
+.gift:hover{background:#ffffff1c}.gift svg{width:100%;max-width:112px;aspect-ratio:1;overflow:visible}
+.gift.locked{opacity:.4;filter:saturate(.3)}.gift.ready svg{animation:bob 2.4s ease-in-out infinite}.gift.done{background:#ffffff26}
+@keyframes bob{50%{transform:translateY(-4px)}}.gd{font-size:11px;font-weight:600;color:var(--soft)}
+@media(max-width:600px){.advgrid{gap:7px}.gift{padding:8px 2px 4px}}
+.advbanner{position:relative;overflow:hidden;display:flex;align-items:center;gap:18px;border-radius:18px;padding:24px 24px 20px;margin-bottom:24px;background:linear-gradient(120deg,#6e1d2c,#8c2a3b 55%,#5f1826);border:1px solid #e9b8c244;box-shadow:0 10px 30px #0004}
+.advbanner::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,#f6d365 0 10px,#e05a5a 10px 20px,#2f8f6b 20px 30px,#f6a6b8 30px 40px)}
+.advbanner::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.75;background-image:radial-gradient(2px 2px at 20px 30px,#fff 50%,transparent 51%),radial-gradient(2px 2px at 90px 95px,#ffffffcc 50%,transparent 51%),radial-gradient(3px 3px at 160px 20px,#fff 50%,transparent 51%),radial-gradient(2px 2px at 240px 70px,#ffffffdd 50%,transparent 51%),radial-gradient(2px 2px at 310px 110px,#fff 50%,transparent 51%);background-size:340px 130px;animation:snow 10s linear infinite}
+@keyframes snow{to{background-position:-40px 130px}}
+.advicon{width:84px;flex:none;position:relative;z-index:1}.advicon svg{width:100%;overflow:visible;display:block}
+.advtext{flex:1;position:relative;z-index:1}.advtext h3{font:600 24px Lora,serif;margin:0 0 4px}.advtext p{margin:0;font-size:13px;color:#f1d7dc}.advsub{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#f6d365;margin-top:8px}
+.advbtn{position:relative;z-index:1;background:var(--cream);color:var(--bur);border:0;white-space:nowrap}.advbtn:hover{background:#fff}
+@media(max-width:600px){.advbanner{flex-wrap:wrap;padding:24px 18px 18px}.advicon{width:64px}.advbtn{width:100%}}
+.gift{background:#d9ecd0;border-color:#bcd9ae;color:#2f4a2c}
+.gift.ready,.gift.opened{background:#efe3c8;border-color:#d9ccb0;color:#6a5a3a}
+.gift.done{background:#7b2232;border-color:#5f1826;color:var(--cream)}
+.gift.locked{opacity:.85;filter:none}.gift:hover{filter:brightness(1.05)}.gift .gd{color:inherit;opacity:.9}
+.fortune{position:relative;max-width:380px;margin:14px auto 6px;padding:22px 24px 18px;background-color:#fffbea;background-image:repeating-linear-gradient(0deg,transparent 0 27px,#f3e9c8 27px 28px);color:#3b2a2a;font:italic 500 19px/1.45 Lora,Georgia,serif;text-align:center;border-top:5px solid #c8456a;border-bottom:5px solid #c8456a;box-shadow:0 8px 18px #0003,inset 0 0 0 1px #e8dcae;transform:rotate(-1.5deg);transform-origin:top center;animation:unroll .75s cubic-bezier(.2,.8,.2,1) both}
+.fday{display:block;font:700 10px 'DM Sans',sans-serif;font-style:normal;letter-spacing:2px;color:#c8456a;margin-bottom:10px}
+@keyframes unroll{from{opacity:0;transform:rotate(-1.5deg) scaleY(.05)}60%{opacity:1}to{opacity:1;transform:rotate(-1.5deg) scaleY(1)}}
+.nyov{position:fixed;inset:0;background:#0b1a13ee;z-index:25;display:grid;place-items:center;text-align:center;padding:20px}
+.nytxt{font:700 clamp(40px,11vw,96px)/1.05 Lora,Georgia,serif;background:linear-gradient(180deg,#fff3b0,#f6d365 50%,#e0a82e);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px #f6d36588);animation:nypulse 2.2s ease-in-out infinite}
+@keyframes nypulse{50%{transform:scale(1.04)}}.nybox p{color:#e4ead9;margin:18px 0 6px}
+.advwrap{position:relative}.advwrap .advgrid{filter:blur(3px) saturate(.7);opacity:.6;pointer-events:none}
+.advveil{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px}
+.advveil>div{background:#0f241b99;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid #ffffff2a;border-radius:20px;padding:26px 30px;max-width:420px}
+.advveil h2{font:600 28px Lora,serif;margin:6px 0}.advveil p{color:#d8e0d2;margin:0;font-size:13px}
+.advflake{font-size:34px;display:inline-block;animation:flake 7s linear infinite}@keyframes flake{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
- <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v8</div></div></div>
+ <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v14</div></div></div>
  <div><div class="navlabel">Workspace</div><nav>
-  <button class="nav active" data-page="dashboard">⌂ &nbsp;Dashboard</button><button class="nav" data-page="challenges">▤ &nbsp;Challenges</button><button class="nav" data-page="progress">◷ &nbsp;Progress</button><button class="nav" data-page="archive">▧ &nbsp;Archive</button>
+  <button class="nav active" data-page="dashboard">⌂ &nbsp;Dashboard</button><button class="nav" data-page="challenges">▤ &nbsp;Challenges</button><button class="nav" data-page="progress">◷ &nbsp;Progress</button><button class="nav" data-page="archive">▧ &nbsp;Archive</button><button class="nav" id="navAdvent" data-advent="1" hidden>🎄 &nbsp;Advent</button>
  </nav></div>
  <div class="side-note"><strong>Make every day count.</strong><p>Your challenges, your progress, your little victories.</p></div>
 </aside>
@@ -112,6 +141,7 @@ table.grid{width:100%;border-collapse:collapse;min-width:320px}
  <div class="topbar"><div class="eyebrow" id="today"></div><div class="actions"><button class="iconbtn" title="Settings" onclick="toast('Settings will be available in a future update.')">⚙</button><div class="avatar" id="avatar">?</div><button class="iconbtn" style="width:auto;padding:0 14px;font-size:12px" onclick="logout()">Log out</button></div></div>
 
  <section class="page active" id="dashboard"><div class="hero"><div><h1>Make every day count.</h1><p class="subtitle">Your challenges, your progress, your little victories.</p></div><button class="primary" onclick="openModal()">＋ Create challenge</button></div>
+ <div id="advBanner"></div>
  <div class="stats"><div class="stat"><div class="stat-label">Active challenges</div><div class="stat-value" id="activeCount">0</div><div class="stat-note">Things you are working on</div></div><div class="stat"><div class="stat-label">Your days completed</div><div class="stat-value" id="doneCount">0</div><div class="stat-note" id="fDone">Every little win counts</div></div><div class="stat"><div class="stat-label">Your reading time</div><div class="stat-value" id="focusTime">0m</div><div class="stat-note" id="fTime">Across all challenges</div></div></div>
  <div class="sectionhead"><h2>Active challenges</h2><button class="link" onclick="showPage('challenges')">VIEW ALL →</button></div><div class="cards" id="dashboardCards"></div></section>
 
@@ -174,6 +204,7 @@ function cellsDone(c,p){
   return c.kind==='quest'
     ? p.steps.filter(x=>x.done).length
     : c.kind==='alphabet' ? p.letters.length
+    : c.kind==='advent' ? p.doors.filter(x=>x.done).length
     : p.rolls.filter(x=>x.done).length;
 }
 /* planned time: rolled days use their rolled duration; past days that nobody rolled count as 60 min (the average of the 4:3:2:1 odds) */
@@ -224,26 +255,28 @@ let timer;const later=()=>{clearTimeout(timer);timer=setTimeout(load,300)};
 
 /* ---- Load everything and keep it in sync ---- */
 async function load(){
- const [a,b,c,d,f,g]=await Promise.all([
+ const [a,b,c,d,f,g,k]=await Promise.all([
   sb.from('challenges').select('*').order('created_at',{ascending:false}),
   sb.from('challenge_participants').select('*').order('id'),
   sb.from('challenge_entries').select('*'),
   sb.from('quest_steps').select('*').order('position'),
   sb.from('dice_rolls').select('*'),
-  sb.from('alphabet_entries').select('*')]);
- const err=a.error||b.error||c.error||d.error||f.error||g.error;
+  sb.from('alphabet_entries').select('*'),
+  sb.from('advent_doors').select('*')]);
+ const err=a.error||b.error||c.error||d.error||f.error||g.error||k.error;
  if(err){toast('Could not load data: '+err.message);return}
  data=a.data.map(ch=>({id:ch.id,title:ch.title,description:ch.description||'',type:ch.type,start:ch.start_date,end:ch.end_date,finished:!!ch.finished,result:ch.result,kind:ch.kind||'time',size:ch.quest_size||0,
-  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[],rolls:[],letters:[]}))}));
+  people:b.data.filter(p=>p.challenge_id===ch.id).map(p=>({id:p.id,name:p.name,user_id:p.user_id,punishment:p.punishment||'',entries:{},steps:[],rolls:[],letters:[],doors:[]}))}));
  c.data.forEach(e=>{const ch=findC(e.challenge_id),p=ch&&ch.people.find(x=>x.id===e.participant_id);if(p)p.entries[e.challenge_date]={duration:e.duration_minutes,done:e.minutes_done||(e.completed?e.duration_minutes:0),started:e.timer_started_at,completed:e.completed}});
  d.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.steps.push({id:x.id,position:x.position,key:x.task_key,title:x.book_title||'',author:x.book_author||'',done:!!x.done})});
  f.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.rolls.push({id:x.id,row:x.row_no,col:x.col_no,title:x.book_title||'',author:x.book_author||'',done:!!x.done,skipped:!!x.skipped})});
  g.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.letters.push({id:x.id,letter:x.letter,title:x.book_title||'',author:x.book_author||'',cover:x.cover_url||'',at:new Date(x.created_at).getTime()})});
+ k.data.forEach(x=>{const ch=findC(x.challenge_id),p=ch&&ch.people.find(y=>y.id===x.participant_id);if(p)p.doors.push({id:x.id,day:x.day,variant:x.variant,done:!!x.done})});
  refresh()}
 
 /* ---- Navigation & modals ---- */
 function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
-document.querySelectorAll('.nav').forEach(x=>x.onclick=()=>showPage(x.dataset.page));
+document.querySelectorAll('.nav').forEach(x=>x.onclick=()=>x.dataset.advent?openAdvent():showPage(x.dataset.page));
 function openModal(){startWizard();$('backdrop').classList.add('open')}function closeModal(){$('backdrop').classList.remove('open')}
 function openDlg(h){$('dlgBody').innerHTML=h;$('dlg').classList.add('open')}function closeDlg(){$('dlg').classList.remove('open')}
 
@@ -269,7 +302,7 @@ $('form').onsubmit=async e=>{e.preventDefault();
   if(!s||!en)return toast('Please choose the dates.');
   if(en<s)return toast('End date must be after start date.');
   if(Math.round((dt(en)-dt(s))/864e5)>30)return toast('Up to 31 days, please.')}
- else{s=en=iso(new Date());size=kind==='quest'?parseInt($('qsize').value,10):kind==='alphabet'?26:36}
+ else{s=en=iso(new Date());size=kind==='quest'?parseInt($('qsize').value,10):kind==='alphabet'?26:kind==='advent'?31:36;if(kind==='advent'){const Y=new Date().getFullYear();s=Y+'-12-01';en=Y+'-12-31'}}
  const pn=[...document.querySelectorAll('.pun')].map(i=>i.value.trim());
  const r1=await sb.from('challenges').insert({title:$('title').value.trim(),description:$('description').value.trim(),type:wiz.type,kind,quest_size:size,start_date:s,end_date:en}).select().single();
  if(r1.error)return toast('Could not create: '+r1.error.message);
@@ -279,16 +312,17 @@ $('form').onsubmit=async e=>{e.preventDefault();
  await load();closeModal();startWizard();toast('Your challenge is ready!');openChallenge(r1.data.id)};
 
 /* ---- Lists ---- */
-function summary(c){const r=c.result;if(!r)return'';if(r.abandoned)return'Challenge abandoned';const x=r.counts[0];if(r.alpha&&r.solo)return'Grid complete!';if(r.quest&&r.dice)return r.bingo?'Challenge complete! Bingo!':'Challenge finished';if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
-function card(c){const q=c.kind==='quest',dd=c.kind==='dice',al=c.kind==='alphabet',g=q||dd||al,n=g?c.size:dayList(c).length;
+function summary(c){const r=c.result;if(!r)return'';if(r.abandoned)return'Challenge abandoned';const x=r.counts[0];if(r.alpha&&r.solo)return'Grid complete!';if(r.advent)return'Advent complete! 🎄';if(r.quest&&r.dice)return r.bingo?'Challenge complete! Bingo!':'Challenge finished';if(r.quest)return'Quest finished';if(r.solo)return x.pct!==undefined?`Completed ${x.pct}% of planned time`:`Completed ${x.n} of ${r.n} days`;if(r.tie)return'It was a tie — no punishment';return'Winner: '+r.winners.join(' & ')+'!'}
+function card(c){const q=c.kind==='quest',dd=c.kind==='dice',al=c.kind==='alphabet',ad=c.kind==='advent',g=q||dd||al||ad,n=g?c.size:dayList(c).length;
  const rows=[...c.people].sort((a,b)=>(b.user_id===myId)-(a.user_id===myId)).map(p=>{const k=g?cellsDone(c,p):0,pc=g?(n?Math.round(k/n*100):0):pct(c,p),label=g?`${k} / ${n}`:`${pc}%`;
   return `<div class="progressrow" style="margin-top:12px"><span>${esc(p.name)}${p.user_id===myId?' (you)':''}</span><b>${label}</b></div><div class="progress"><span style="width:${pc}%"></span></div>`}).join('');
- return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?(c.result?.abandoned?'abandoned':'done'): ''}">${c.finished?(c.result?.abandoned?'ABANDONED':'FINISHED'):'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':dd?'Dice Game':al?'Alphabet Grid':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${g?(n===1?'task':(dd||al?'cells':'tasks')):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
+ return `<article class="card"><div class="cardtop"><span class="tag ${c.type==='personal'?'personal':''}">${c.type==='shared'?'SHARED':'PERSONAL'}</span><span class="tag ${c.finished?(c.result?.abandoned?'abandoned':'done'): ''}">${c.finished?(c.result?.abandoned?'ABANDONED':'FINISHED'):'IN PROGRESS'}</span></div><h3>${esc(c.title)}</h3><div class="meta">${q?'Reading Quest':dd?'Dice Game':al?'Alphabet Grid':ad?'Advent Calendar':fmt(c.start)+' — '+fmt(c.end)}</div>${rows}${c.finished?`<div class="meta" style="margin-top:12px">${esc(summary(c))}</div>`:''}<div class="cardfoot"><span class="meta">${n} ${g?(n===1?'task':(dd||al?'cells':ad?'doors':'tasks')):(n===1?'day':'days')}</span><button class="smallbtn" onclick="openChallenge(${c.id})">OPEN →</button></div></article>`}
 const empty=s=>`<div class="empty"><strong>${s}</strong>Create a challenge and let the little wins begin.</div>`;
 function render(){const act=data.filter(c=>!c.finished),arch=data.filter(c=>c.finished),my=statsFor(myId),other=profiles.find(p=>p.user_id!==myId),os=other?statsFor(other.user_id):null;
  $('activeCount').textContent=act.length;$('doneCount').textContent=my.d;$('focusTime').textContent=fm(my.m);
  $('fDone').textContent=os?other.name+': '+os.d:'Every little win counts';$('fTime').textContent=os?other.name+': '+fm(os.m):'Across all challenges';
  $('pDone').textContent=my.d;$('pMinutes').textContent=my.m;$('pChallenges').textContent=data.length;
+ $('navAdvent').hidden=!advWindow();$('advBanner').innerHTML=advBannerHTML();
  $('pPeople').innerHTML=profiles.map(pr=>{const s=statsFor(pr.user_id),k=data.filter(c=>c.people.some(p=>p.user_id===pr.user_id)).length,you=pr.user_id===myId;
   return `<article class="card"><div class="cardtop"><span class="tag ${you?'':'personal'}">${you?'YOU':'FRIEND'}</span></div><h3>${esc(pr.name)}</h3><div class="meta">${k} challenges</div><div class="progressrow" style="margin-top:14px"><span>Days completed</span><b>${s.d}</b></div><div class="progressrow" style="margin-top:6px"><span>Reading time</span><b>${fm(s.m)}</b></div></article>`}).join('');
  $('dashboardCards').innerHTML=act.length?act.slice(0,4).map(card).join(''):empty('Nothing on the list yet.');
@@ -301,13 +335,14 @@ function resultHTML(c){const r=c.result;let t;
  const one=x=>x.pct!==undefined?`${esc(x.name)} ${x.pct}%`:`${esc(x.name)} ${x.n}/${r.n}`;
  const line=r.counts.map(one).join(' · ');
  if(r.abandoned){t=`<h2>Challenge abandoned</h2><p>Your progress has been saved in the archive.</p>`}
+ else if(r.advent){t=`<h2>Advent complete! 🎄</h2><p>All doors are done. Merry reading!</p>`}
  else if(r.quest&&r.dice){t=r.bingo?`<h2>Challenge complete! Bingo!</h2><p>Well done! You completed a line.</p>`:`<h2>Challenge finished</h2><p>Well done!</p>`}
  else if(r.quest)t=`<h2>Quest finished</h2><p>Every path is saved in the archive.</p>`;
  else if(r.solo)t=`<h2>Challenge finished</h2><p>Well done!</p>`;
  else if(r.tie)t=`<h2>It’s a tie!</h2><p>Same total result, so no punishment this time.</p>`;
  else t=`<h2>Winner: ${r.winners.map(esc).join(' &amp; ')}!</h2>`+r.losers.map(l=>`<p><b>${esc(l.name)}</b>’s punishment: ${l.punishment?esc(l.punishment):'none was set'}</p>`).join('');
  return `<div class="result">${t}<div class="meta" style="margin-top:10px">${line}</div></div>`}
-function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);if(c.kind==='dice')return diceDetail(c);if(c.kind==='alphabet')return alphaDetail(c);const ds=dayList(c);
+function detail(){const c=findC(current);if(!c)return;if(c.kind==='quest')return questDetail(c);if(c.kind==='dice')return diceDetail(c);if(c.kind==='alphabet')return alphaDetail(c);if(c.kind==='advent')return adventDetail(c);const ds=dayList(c);
  let h=`<div class="eyebrow">${c.type.toUpperCase()} CHALLENGE</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little progress, one day at a time.')}</p><p class="meta" style="margin-top:6px">${fmt(c.start)} — ${fmt(c.end)}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  else if(c.people.some(p=>p.punishment))h+=`<div class="chips">${c.people.filter(p=>p.punishment).map(p=>`<span class="chip"><b>${esc(p.name)}</b>’s punishment: ${esc(p.punishment)}</span>`).join('')}</div>`;
@@ -345,9 +380,9 @@ async function del(id){if(!confirm('Delete this challenge for good?'))return;
  await load();showPage('challenges')}
 
 /* ---- Finish challenge ---- */
-function askFinish(id){const c=findC(id);if(c.kind==='alphabet')return askFinishAlpha(c);if(c.kind==='quest'||c.kind==='dice')return askFinishQuest(c);const early=iso(new Date())<c.end;
+function askFinish(id){const c=findC(id);if(c.kind==='alphabet')return askFinishAlpha(c);if(c.kind==='advent')return askFinishAdvent(c);if(c.kind==='quest'||c.kind==='dice')return askFinishQuest(c);const early=iso(new Date())<c.end;
  openDlg(`<h2>Finish this challenge?</h2><p>${early?'You are finishing before the planned end date, so this challenge will be marked ABANDONED.':'The challenge has reached its planned end date, so it will be marked FINISHED.'} We will compare everyone’s progress and move it to the archive. Days nobody set a time for count as 60 minutes. This cannot be undone.</p><div class="counts">${c.people.map(p=>`<div><b>${esc(p.name)}</b><span>${pct(c,p,true)}%</span></div>`).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${id})">Yes, finish</button></div>`)}
-async function finish(id){if(findC(id).kind==='alphabet')return finishAlpha(findC(id));if(findC(id).kind==='quest'||findC(id).kind==='dice')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs,abandoned:iso(new Date())<c.end};
+async function finish(id){if(findC(id).kind==='alphabet')return finishAlpha(findC(id));if(findC(id).kind==='advent')return finishAdvent(findC(id));if(findC(id).kind==='quest'||findC(id).kind==='dice')return finishQuest(findC(id));const c=findC(id),n=dayList(c).length,cs=c.people.map(p=>({name:p.name,pct:pct(c,p,true),min:pmins(p),punishment:p.punishment})),r={n,counts:cs,abandoned:iso(new Date())<c.end};
  if(cs.length<2)r.solo=true;
  else{const mx=Math.max(...cs.map(x=>x.pct)),mn=Math.min(...cs.map(x=>x.pct));
   if(mx===mn)r.tie=true;
@@ -520,6 +555,148 @@ async function finishAlpha(c){
  if(!fin.length)r.abandoned=true;
  else if(c.people.length<2)r.solo=true;
  else{r.winners=[fin[0].name];r.losers=c.people.filter(p=>p.id!==fin[0].participant_id).map(p=>({name:p.name,punishment:p.punishment}))}
+ const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',c.id);
+ if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
+ c.finished=true;c.result=r;refresh();
+ openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
+
+/* ---- Advent Calendar: 31 gift boxes that open by date (a day may offer two variants) ---- */
+const DAYEMO=['🎄','⛄','🎆','🥂','❄️','🎅','🎁','🕯️','⭐','🔔','🦌','🍪','🧦','🎇','🍾','☃️','🧣','🌟','🎶','🍫','🌙','🧤','🍊','✨','🤶','🛷','🎀','☕','🥳','🎊','🎆'];
+const ADV=[
+ {a:"Выбери книгу с самой красивой обложкой на твоей полке.",b:"Начни сезон: почитай 15 минут с чем-то тёплым в руках."},
+ {a:"Выбери книгу с числом в названии.",b:"Наведи порядок на книжных полках и добавь новогодний декор."},
+ {a:"Книга с зимней или заснеженной обложкой.",b:"Прочитай 50 страниц в уютном месте, где обычно не читаешь."},
+ {a:"Выбери книгу, название которой начинается на первую букву твоего имени.",b:"Почитай час при ароматных свечах."},
+ {a:"Книга, которая стоит дома больше года нечитанной.",b:"Читай 30 минут, телефон в другой комнате."},
+ {a:"Закрой глаза и достань случайную книгу из своего списка к прочтению.",b:"Объешься вкусных конфет и запиши одну интересную фразу из книги, которую читаешь."},
+ {a:"Короткая книга (до 250 страниц).",b:"Почитай 30 минут перед сном."},
+ {a:"Выбери книгу с человеком или животным на обложке.",b:"Посмотри зимний фильм, который является экранизацией книги."},
+ {a:"Книга с красной или зелёной обложкой.",b:"Почитай полтора часа и не забудь о вкусняшках."},
+ {a:"Выбери пятую слева книгу на верхней полке.",b:"Оденься сегодня под цвет обложки книги, которую читаешь, или читай 2 часа."},
+ {a:"Выбери книгу, в названии которой ровно три слова.",b:"Посмотри любое книжное видео на ютубе."},
+ {a:"Начни книгу, которую посоветовал друг.",b:"Прочитай 25 страниц и запиши одно слово или мысль, которую хочешь запомнить."},
+ {a:"Выбери книгу, изданную в год твоего рождения или ближайший к нему.",b:"Почитай 20 минут сразу после пробуждения, до телефона."},
+ {a:"Книга, по которой сняли фильм или сериал.",b:"Напиши однострочный отзыв о текущей книге."},
+ {a:"Выбери книгу, которую купила из-за обложки.",b:"Ленивый день: читай сколько хочешь."},
+ {a:"Книга с названием из одного слова.",b:"Читай 2 часа, снеки приветствуются."},
+ {a:"Открой три книги на первой странице и выбери ту, у которой лучшая первая строка.",b:"Прочитай 60 страниц."},
+ {a:"Книга автора, которого ты ещё не читала.",b:"Прочитай главу и запиши, что, по-твоему, будет дальше."},
+ {a:"Выбери книгу с названием места на обложке или в заголовке.",b:"10 минут со списком TBR: перенеси одну книгу наверх."},
+ {a:"Самая уютная книга, «comfort read».",b:"Читай 30 минут под пледом с горячим напитком."},
+ {a:"Книга, которую начнёшь в самую длинную ночь года.",b:"Почитай при лампе в самую длинную ночь года."},
+ {a:"Выбери книгу с именем героя в названии.",b:"Прочитай 10 глав."},
+ {a:"Выбери самую толстую книгу, на которую ты готова замахнуться.",b:"Надень самый уютный наряд для чтения и почитай в нём 20 минут."},
+ {a:"Сочельник: выбери книгу с самой завораживающей первой строкой и прочитай первую страницу сегодня вечером.",b:"Сочельник: почитай 30 минут при свете гирлянды и загадай одно читательское желание на следующий год."},
+ {a:"Книга, которую тебе подарили (или хочешь подарить себе).",b:"Почитай 30 минут в тишине и остановись на приятном месте."},
+ {a:"Выбери книгу с нижней полки.",b:"Ленивый день: читай сколько хочется, без нормы."},
+ {a:"Книга с золотым или блестящим элементом на обложке.",b:"Прочитай 30 страниц."},
+ {a:"Выбери книгу, изданную в этом году или недавно.",b:"Оглянись назад: запиши три лучшие книги года."},
+ {a:"Бери книгу с синими элементами на обложке и прочитай её до 31 декабря.",b:"Прочитай 5 глав и запиши одну вещь, которая понравилась."},
+ {a:"Выбери книгу, с которой начнёшь новый год, и положи её на самый верх стопки.",b:"Поставь одну читательскую цель на новый год: число книг или жанр."},
+ {a:"Новогодняя ночь (для смелых): выбери книгу и прочитай её за один день.",b:"Новогодняя ночь: почитай 20 минут и отметь последнюю книгу года."}];
+/* The order of the doors is shuffled (differently every year). Fixed: day 1 (start of the season), 21 (longest night), 24, 25, 30, 31;
+   the "after waking up" task goes to a Sunday, the shelf-decor task to Dec 2-5, the "finish by Dec 31" task to Dec 2-20. */
+const ADV_FIXED={1:1,21:21,24:24,25:25,30:30,31:31};
+function advOrder(Y){let a=(Y*2654435761)%4294967296;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+ const order=Array(31).fill(null),used=new Set(),free=d=>order[d-1]===null;
+ for(const d in ADV_FIXED){order[d-1]=ADV_FIXED[d]-1;used.add(ADV_FIXED[d]-1)}
+ const put=(item,days)=>{const c=days.filter(free);const d=c[Math.floor(rnd()*c.length)];order[d-1]=item;used.add(item)};
+ const sundays=[];for(let d=1;d<=31;d++)if(new Date(Y,11,d).getDay()===0)sundays.push(d);
+ put(12,sundays);put(1,[2,3,4,5]);put(28,Array.from({length:19},(_,i)=>i+2));
+ const rest=[];for(let i=0;i<31;i++)if(!used.has(i))rest.push(i);
+ for(let i=rest.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[rest[i],rest[j]]=[rest[j],rest[i]]}
+ for(let d=1;d<=31;d++)if(free(d))order[d-1]=rest.pop();
+ return order}
+const advTask=(c,d)=>ADV[advOrder(+c.start.slice(0,4))[d-1]];
+const ADV_N=31;
+const PAL=[['#e05a5a','#f6d365','#fff0d0'],['#2f8f6b','#f4c542','#e8ffe9'],['#4f74c8','#f6a6b8','#e8f0ff'],['#9b59b6','#f6d365','#f6e7ff'],['#e8903a','#2f8f6b','#fff0d9'],['#c8456a','#ffffff','#ffe3ec'],['#2a8fa3','#f6d365','#e3fbff'],['#7a9a2e','#d94f6a','#f3f8dd']];
+const SHAPES=[[76,52,14],[50,34,10],[46,66,12],[84,36,12]]; /* big, small, tall, wide */
+function giftSVG(d,open){
+ const pal=PAL[(d*5)%8],pat=d%5,sh=SHAPES[(d*3)%4],bw=sh[0],bh=sh[1],lh=sh[2],x0=(100-bw)/2,y0=94-bh,ly=y0-lh,id='gp'+d,ink='#3b2323',pt=pal[2];
+ const defs={0:`<pattern id="${id}" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="3" height="8" fill="${pt}"/></pattern>`,
+  1:`<pattern id="${id}" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="2.2" fill="${pt}"/></pattern>`,
+  2:`<pattern id="${id}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="10" fill="${pt}"/></pattern>`,
+  3:`<pattern id="${id}" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M7 3v8M3 7h8" stroke="${pt}" stroke-width="2" stroke-linecap="round"/></pattern>`,
+  4:`<pattern id="${id}" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 9l3-6 3 6 3-6 3 6" fill="none" stroke="${pt}" stroke-width="2"/></pattern>`}[pat];
+ const st=`stroke="${ink}" stroke-width="2" stroke-linejoin="round"`;
+ const lid=`<rect x="${x0-3}" y="${ly}" width="${bw+6}" height="${lh}" rx="3" fill="${pal[0]}" ${st}/><rect x="${x0-3}" y="${ly}" width="${bw+6}" height="${lh}" rx="3" fill="url(#${id})" opacity=".55"/><rect x="45" y="${ly}" width="10" height="${lh}" fill="${pal[1]}" ${st}/>`
+  +`<ellipse cx="38" cy="${ly-5}" rx="11" ry="7" transform="rotate(-25 38 ${ly-5})" fill="${pal[1]}" ${st}/><ellipse cx="62" cy="${ly-5}" rx="11" ry="7" transform="rotate(25 62 ${ly-5})" fill="${pal[1]}" ${st}/><circle cx="50" cy="${ly-3}" r="5" fill="${pal[1]}" ${st}/>`;
+ const body=`<rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" rx="3" fill="${pal[0]}" ${st}/><rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" rx="3" fill="url(#${id})" opacity=".55"/>`
+  +(d%2?`<rect x="${x0}" y="${y0+bh/2-4}" width="${bw}" height="8" fill="${pal[1]}" ${st}/>`:'')+`<rect x="45" y="${y0}" width="10" height="${bh}" fill="${pal[1]}" ${st}/>`
+  +(open?`<rect x="${x0+2}" y="${y0}" width="${bw-4}" height="6" fill="#5a2d2d"/>`:'');
+ const tag=`<circle cx="50" cy="${y0+bh/2}" r="9" fill="#fff6e0" stroke="${ink}" stroke-width="1.8" stroke-linejoin="round"/><text x="50" y="${y0+bh/2+4}" text-anchor="middle" font-family="Lora,Georgia,serif" font-weight="700" font-size="11" fill="${ink}">${d}</text>`;
+ const lidG=open?`<g transform="translate(17 -6) rotate(16 50 ${ly})">${lid}</g>`:lid;
+ return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>${defs}</defs>${body}${tag}${lidG}</svg>`}
+/* The Advent Calendar appears by itself (Nov 15 - Jan 6): one shared calendar per year, created on first open */
+function advWindow(){const t=new Date(),m=t.getMonth(),d=t.getDate();return(m===10&&d>=15)||m===11||(m===0&&d<=6)}
+function advYear(){const t=new Date();return t.getMonth()===0?t.getFullYear()-1:t.getFullYear()}
+function findAdvent(){const Y=String(advYear());return data.filter(c=>c.kind==='advent'&&c.start.slice(0,4)===Y&&/^Advent Calendar \d{4}$/.test(c.title)).sort((a,b)=>a.id-b.id)[0]}
+let advBusy=false;
+async function openAdvent(){let ex=findAdvent();if(ex)return openChallenge(ex.id);if(advBusy)return;advBusy=true;
+ await load();ex=findAdvent();if(ex){advBusy=false;return openChallenge(ex.id)}
+ const Y=advYear(),r1=await sb.from('challenges').insert({title:'Advent Calendar '+Y,description:'A little surprise every day of December.',type:'shared',kind:'advent',quest_size:ADV_N,start_date:Y+'-12-01',end_date:Y+'-12-31'}).select().single();
+ if(r1.error){advBusy=false;return toast('Could not create the calendar: '+r1.error.message)}
+ const r2=await sb.from('challenge_participants').insert(profiles.map(p=>({challenge_id:r1.data.id,name:p.name,user_id:p.user_id,punishment:''})));
+ advBusy=false;if(r2.error)return toast('Could not add participants: '+r2.error.message);
+ await load();openChallenge(r1.data.id)}
+function advBannerHTML(){if(!advWindow())return'';const Y=advYear(),ex=findAdvent(),t=new Date(),start=new Date(Y,11,1),my=ex&&ex.people.find(p=>p.user_id===myId),n=my?my.doors.filter(x=>x.done).length:0;
+ const days=Math.ceil((start-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);
+ const sub=days>0?`Waiting for winter ❄️ · ${days} days left`:(ex&&ex.finished?'The calendar is in the archive':`${n} of ${ADV_N} doors done`);
+ return `<div class="advbanner"><div class="advicon">${giftSVG(8,false)}</div><div class="advtext"><h3>Advent Calendar ${Y}</h3><p>${ADV_N} little reading surprises, one for every day of December.</p><div class="advsub">${sub}</div></div><button class="primary advbtn" onclick="openAdvent()">Open calendar →</button></div>`}
+const doorDate=(c,d)=>c.start.slice(0,4)+'-12-'+String(d).padStart(2,'0');
+function advTestOn(){return false}
+function adventDetail(c){
+ const mineP=c.people.find(p=>p.user_id===myId),sel=c.people.find(p=>p.id===qsel[c.id])||mineP||c.people[0],test=advTestOn(c),today=iso(new Date());
+ let h=`<div class="eyebrow">${c.type.toUpperCase()} · ADVENT CALENDAR</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little surprise every day.')}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
+ if(c.finished&&c.result)h+=resultHTML(c);
+ if(c.people.length>1)h+=`<div class="chips">${c.people.map(p=>`<button class="pill ${p.id===sel.id?'on':''}" onclick="qpick(${c.id},${p.id})">${esc(p.name)}${p.user_id===myId?' (you)':''} · ${p.doors.filter(x=>x.done).length}/${ADV_N}</button>`).join('')}</div>`;
+ const waiting=!c.finished&&!test&&today<c.start;if(waiting)h+='<div class="advwrap">';
+ h+=`<div class="advgrid" style="--ac:${innerWidth<600?4:6}">`;
+ for(let d=1;d<=ADV_N;d++){const door=sel.doors.find(x=>x.day===d),locked=!door&&!test&&today<doorDate(c,d),cls=door?(door.done?'done':'opened'):(locked?'locked':'ready');
+  h+=`<button class="gift ${cls}" onclick="openDoor(${c.id},${sel.id},${d})" aria-label="Door ${d}">${giftSVG(d,!!door)}<span class="gd">Dec ${d}${door&&door.done?' ✓':''}</span></button>`}
+ h+='</div>';
+ if(waiting){const n=Math.ceil((new Date(c.start+'T00:00:00')-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()))/864e5);h+=`<div class="advveil"><div><div class="advflake">❄️</div><h2>Waiting for winter</h2><p>First door opens Dec 1 · ${n} days left</p></div></div></div>`}
+ if(!c.finished)h+=`<div class="finishrow" style="margin-top:18px"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
+ $('detailContent').innerHTML=h}
+function showDoor(c,p,door,mine){const t=advTask(c,door.day),txt=t.any||t[door.variant]||t.a;
+ openDlg(`<h2>Door ${door.day} ${DAYEMO[door.day-1]}</h2><p style="margin-bottom:2px">Your reading fortune for today</p><div class="fortune"><span class="fday">DECEMBER ${door.day}</span>${esc(txt)}</div><div class="modalactions">${mine?`<button class="secondary" onclick="closeDlg()">Close</button><button class="primary" onclick="toggleDoor(${c.id},${p.id},${door.id})">${door.done?'Mark as not done':'Mark as done'}</button>`:`<button class="primary" onclick="closeDlg()">Close</button>`}</div>`)}
+function openDoor(cid,pid,d){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid);if(!p)return;const door=p.doors.find(x=>x.day===d),mine=p.user_id===myId&&!c.finished;
+ if(door)return showDoor(c,p,door,mine);
+ if(!mine)return toast(p.user_id===myId?'This calendar is closed.':'This door has not been opened yet.');
+ if(!advTestOn(c)&&iso(new Date())<doorDate(c,d))return toast('This door opens on December '+d+'.');
+ if(advTask(c,d).any)return pickVariant(cid,pid,d,'any');
+ openDlg(`<h2>Door ${d} ${DAYEMO[d-1]}</h2><p>Where are you with your reading today?</p><div class="choices"><button type="button" class="choice" onclick="pickVariant(${cid},${pid},${d},'a')"><b>I’m between books</b><span>I finished my last one and have no plans yet.</span></button><button type="button" class="choice" onclick="pickVariant(${cid},${pid},${d},'b')"><b>I’m in the middle of a book</b><span>I want to keep reading what I have.</span></button></div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not now</button></div>`)}
+async function pickVariant(cid,pid,d,v){closeDlg();
+ const r=await sb.from('advent_doors').insert({challenge_id:cid,participant_id:pid,day:d,variant:v});
+ if(r.error)return toast('Could not open the door: '+r.error.message);
+ await load();const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),door=p&&p.doors.find(x=>x.day===d);if(door)showDoor(c,p,door,true)}
+async function toggleDoor(cid,pid,id){const ev=window.event,fx=(ev&&ev.clientX)||innerWidth/2,fy=(ev&&ev.clientY)||innerHeight/2;closeDlg();
+ const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),door=p&&p.doors.find(x=>x.id===id);if(!door||p.user_id!==myId||c.finished)return;
+ door.done=!door.done;const now=door.done;refresh();if(now)fireworks(fx,fy);
+ const r=await sb.from('advent_doors').update({done:now}).eq('id',id);
+ if(r.error){toast('Could not save: '+r.error.message);await load();return}
+ await load();const p2=findC(cid).people.find(x=>x.id===pid);
+ if(now&&p2.doors.filter(x=>x.done).length>=ADV_N)showNewYear(cid);
+ else toast(now?'Marked as done!':'Marked as not done.')}
+/* fireworks: a small burst for every finished door and a big finale with HAPPY NEW YEAR */
+let fwCv,fwCx,fwP=[],fwRun=false,fwPend=0;
+function fwStart(){if(!fwCv){fwCv=document.createElement('canvas');fwCv.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30';document.body.appendChild(fwCv);fwCx=fwCv.getContext('2d')}
+ const r=window.devicePixelRatio||1;fwCv.width=innerWidth*r;fwCv.height=innerHeight*r;fwCx.setTransform(r,0,0,r,0,0);if(!fwRun){fwRun=true;requestAnimationFrame(fwLoop)}}
+function fwBurst(x,y,n,power){const cols=['#f6d365','#e05a5a','#2f8f6b','#f6a6b8','#ffffff','#7ec8e3'],base=cols[Math.floor(Math.random()*cols.length)];
+ for(let i=0;i<n;i++){const a=Math.random()*6.283,v=(.35+Math.random())*power;fwP.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,d:.011+Math.random()*.012,c:Math.random()<.7?base:cols[Math.floor(Math.random()*cols.length)],s:1.4+Math.random()*2})}}
+function fwLoop(){fwCx.clearRect(0,0,innerWidth,innerHeight);
+ for(const q of fwP){q.x+=q.vx;q.y+=q.vy;q.vy+=.05;q.vx*=.985;q.vy*=.985;q.life-=q.d;fwCx.globalAlpha=Math.max(0,q.life);fwCx.fillStyle=q.c;fwCx.beginPath();fwCx.arc(q.x,q.y,q.s,0,6.283);fwCx.fill()}
+ fwP=fwP.filter(q=>q.life>0);
+ if(fwP.length||fwPend>0)requestAnimationFrame(fwLoop);else{fwRun=false;fwCx.clearRect(0,0,innerWidth,innerHeight)}}
+function fireworks(x,y){fwStart();fwBurst(x,y,38,4.2);setTimeout(()=>fwBurst(x,y-20,26,3),180)}
+function finale(){fwStart();for(let i=0;i<14;i++){fwPend++;setTimeout(()=>{fwBurst(innerWidth*(.12+Math.random()*.76),innerHeight*(.12+Math.random()*.5),60,5.2);fwPend--},i*420)}}
+function showNewYear(cid){const o=document.createElement('div');o.className='nyov';
+ o.innerHTML='<div class="nybox"><div class="nytxt">HAPPY<br>NEW YEAR</div><p>Every door is done. What a reading December! 🎆</p><div class="modalactions" style="justify-content:center"><button class="secondary" id="nyc">Close</button><button class="primary" id="nyf">Finish calendar</button></div></div>';
+ document.body.appendChild(o);o.querySelector('#nyc').onclick=()=>o.remove();o.querySelector('#nyf').onclick=()=>{o.remove();askFinish(cid)};finale()}
+function askFinishAdvent(c){const any=c.people.some(p=>p.doors.filter(x=>x.done).length>=ADV_N);
+ openDlg(`<h2>Finish this calendar?</h2><p>${any?'All '+ADV_N+' doors are done, so it will be marked FINISHED.':'Not all doors are done yet, so it will be marked ABANDONED.'} It moves to the archive. This cannot be undone.</p><div class="counts">${c.people.map(p=>{const n=p.doors.filter(x=>x.done).length;return `<div><b>${esc(p.name)}</b><span>${n} / ${ADV_N} · ${Math.round(n/ADV_N*100)}%</span></div>`}).join('')}</div><div class="modalactions"><button class="secondary" onclick="closeDlg()">Not yet</button><button class="primary" onclick="finish(${c.id})">Yes, finish</button></div>`)}
+async function finishAdvent(c){const counts=c.people.map(p=>{const n=p.doors.filter(x=>x.done).length;return{participant_id:p.id,name:p.name,n,pct:Math.round(n/ADV_N*100)}});
+ const r={quest:true,advent:true,n:ADV_N,counts,abandoned:!counts.some(x=>x.n>=ADV_N)};
  const res=await sb.from('challenges').update({finished:true,result:r}).eq('id',c.id);
  if(res.error){closeDlg();return toast('Could not finish: '+res.error.message)}
  c.finished=true;c.result=r;refresh();
