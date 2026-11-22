@@ -139,12 +139,41 @@ body.rbbg{background:#1d3a2f url("data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http
 @media(max-width:600px){.rt-n{font-size:9px;padding:2px 5px}.rt-t{font-size:9px}}
 .race{margin:0 0 20px}.cars{display:flex;align-items:center;gap:8px;margin-top:10px}.sw{width:26px;height:26px;border-radius:50%;border:2px solid #0003;padding:0}.sw.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--bur)}.sw.off{opacity:.25;pointer-events:none}
 .xbtn{position:absolute;top:-4px;right:-4px;width:34px;height:34px;border-radius:50%;border:0;background:var(--beige);color:var(--ink);font-size:15px}.newsitem{display:flex;gap:14px;align-items:flex-start;background:var(--beige);border-radius:16px;padding:16px;margin-top:12px}.newsitem .ni{font-size:32px;line-height:1}.newsitem h3{margin:0 0 4px;font-size:17px}.newsitem p{margin:0;font-size:13px;line-height:1.55;color:#4d493b}
+.garland{display:flex;justify-content:space-between;align-items:flex-start;margin:0 8px 14px;padding-top:4px;border-top:2px solid #0b131166}
+.garland i{width:9px;height:13px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:var(--c);box-shadow:0 0 10px 2px var(--c);animation:twinkle 1.9s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+.gift{position:relative}
+.gift.today{box-shadow:0 0 0 2px #f6d365,0 0 18px #f6d36599;animation:todayglow 2s ease-in-out infinite}
+@keyframes todayglow{50%{box-shadow:0 0 0 2px #fff0b0,0 0 28px #f6d365}}
+.tbadge{position:absolute;top:5px;right:6px;z-index:2;background:#f6d365;color:#5a3b00;font-size:9px;font-weight:800;letter-spacing:.6px;padding:2px 6px;border-radius:8px}
+.gift.ready:hover svg{animation:wiggle .5s ease-in-out}
+@keyframes wiggle{25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+.giftov{position:fixed;inset:0;z-index:12;display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(circle at 50% 35%,#2f6650ee,#0b1a13f5);animation:gfade .35s both}
+@keyframes gfade{from{opacity:0}to{opacity:1}}
+.gscene{width:min(440px,100%);display:grid;justify-items:center}
+.gbox{position:relative;width:150px;height:150px}
+.gc,.go{position:absolute;inset:0}.gc svg,.go svg{width:100%;height:100%;overflow:visible;display:block}
+.gc{animation:gshake .9s ease-in-out both,ghide .25s .85s forwards}
+.go{opacity:0;transform:scale(.7);animation:gpop .45s cubic-bezier(.2,1.4,.4,1) .85s forwards}
+.again .gc{display:none}.again .go{animation:gpop .3s .05s forwards}
+@keyframes gshake{0%,100%{transform:rotate(0)}15%{transform:rotate(-8deg) scale(1.05)}30%{transform:rotate(8deg) scale(1.08)}45%{transform:rotate(-8deg) scale(1.1)}60%{transform:rotate(6deg) scale(1.12)}80%{transform:rotate(-3deg) scale(1.1)}}
+@keyframes ghide{to{opacity:0}}@keyframes gpop{to{opacity:1;transform:scale(1)}}
+.gscroll{width:min(360px,92%);margin-top:-26px;opacity:0;transform:translateY(40px);animation:grise .6s ease-out 1.05s forwards;position:relative;z-index:1}
+.again .gscroll{animation-delay:.2s}@keyframes grise{to{opacity:1;transform:translateY(0)}}
+.roll{height:17px;margin:0 -9px;border-radius:10px;background:linear-gradient(180deg,#fbf2d6,#dccb9f 55%,#b99f66);box-shadow:0 3px 7px #0006;position:relative;z-index:1}
+.paper{max-height:0;overflow:hidden;background-color:#fffbea;background-image:repeating-linear-gradient(0deg,transparent 0 27px,#f3e9c8 27px 28px);box-shadow:inset 0 0 0 1px #e8dcae;animation:gunroll 1.4s cubic-bezier(.3,.7,.2,1) 1.5s forwards}
+.again .paper{animation-delay:.5s;animation-duration:.8s}@keyframes gunroll{to{max-height:var(--ph,300px)}}
+.pin{padding:20px 22px 18px;text-align:center;color:#3b2a2a;opacity:0;animation:gtext .6s ease 2.4s forwards}
+.again .pin{animation-delay:1s}@keyframes gtext{to{opacity:1}}
+.ftxt{font:italic 500 19px/1.45 Lora,Georgia,serif}
+.gactions{display:flex;gap:10px;margin-top:22px;opacity:0;animation:gtext .5s ease 2.8s forwards}.again .gactions{animation-delay:1.3s}
+@media(prefers-reduced-motion:reduce){.giftov *{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
- <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v16</div></div></div>
+ <div class="brand"><img class="mark" alt="Bookish" src="data:image/png;base64,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"><div><div class="brandname">Bookish</div><div class="subbrand">little goals, lovely days · v17</div></div></div>
  <div><div class="navlabel">Workspace</div><nav>
   <button class="nav active" data-page="dashboard">⌂ &nbsp;Dashboard</button><button class="nav" data-page="challenges">▤ &nbsp;Challenges</button><button class="nav" data-page="progress">◷ &nbsp;Progress</button><button class="nav" data-page="archive">▧ &nbsp;Archive</button><button class="nav" id="navAdvent" data-advent="1" hidden>🎄 &nbsp;Advent</button>
  </nav></div>
@@ -297,7 +326,7 @@ async function load(){
 function showPage(id){document.body.classList.remove('rbbg');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
 document.querySelectorAll('.nav').forEach(x=>x.onclick=()=>x.dataset.advent?openAdvent():showPage(x.dataset.page));
 function openModal(){startWizard();$('backdrop').classList.add('open')}function closeModal(){$('backdrop').classList.remove('open')}
-function openDlg(h){$('dlgBody').innerHTML=h;$('dlgBody').style.width='';$('dlg').classList.add('open')}function closeDlg(){$('dlg').classList.remove('open')}
+function openDlg(h){$('dlgBody').innerHTML=h;$('dlgBody').style.width='';$('dlg').classList.add('open')}function closeDlg(){$('dlg').classList.remove('open');const g=document.getElementById('giftov');if(g)g.remove()}
 
 /* ---- Create challenge (3 steps) ---- */
 let wiz={kind:null,type:null};
@@ -794,6 +823,7 @@ function advBannerHTML(){if(!advWindow())return'';const Y=advYear(),ex=findAdven
  const days=Math.ceil((start-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);
  const sub=days>0?`Waiting for winter ❄️ · ${days} ${days===1?'day':'days'} left`:(ex&&ex.finished?'The calendar is in the archive':`${n} of ${ADV_N} doors done`);
  return `<div class="advbanner"><div class="advicon">${giftSVG(8,false)}</div><div class="advtext"><h3>Advent Calendar ${Y}</h3><p>${ADV_N} little reading surprises, one for every day of December.</p><div class="advsub">${sub}</div></div><button class="primary advbtn" onclick="openAdvent()">Open calendar →</button></div>`}
+const GARLAND='<div class="garland">'+Array.from({length:22},(_,i)=>`<i style="--c:${['#e05a5a','#f6d365','#4fb36d','#4aa8e0','#f48fb1'][i%5]};--d:${((i*37)%18)/10}s"></i>`).join('')+'</div>';
 const doorDate=(c,d)=>c.start.slice(0,4)+'-12-'+String(d).padStart(2,'0');
 function advTestOn(){return false}
 function adventDetail(c){
@@ -801,16 +831,23 @@ function adventDetail(c){
  let h=`<div class="eyebrow">${c.type.toUpperCase()} · ADVENT CALENDAR</div><div class="cardtop" style="align-items:flex-start"><div><h1>${esc(c.title)}</h1><p class="subtitle">${esc(c.description||'A little surprise every day.')}</p></div><button class="secondary" onclick="del(${c.id})">Delete</button></div><div style="height:18px"></div>`;
  if(c.finished&&c.result)h+=resultHTML(c);
  if(c.people.length>1)h+=`<div class="chips">${c.people.map(p=>`<button class="pill ${p.id===sel.id?'on':''}" onclick="qpick(${c.id},${p.id})">${esc(p.name)}${p.user_id===myId?' (you)':''} · ${p.doors.filter(x=>x.done).length}/${ADV_N}</button>`).join('')}</div>`;
- const waiting=!c.finished&&!test&&today<c.start;if(waiting)h+='<div class="advwrap">';
+ h+=GARLAND;const waiting=!c.finished&&!test&&today<c.start;if(waiting)h+='<div class="advwrap">';
  h+=`<div class="advgrid" style="--ac:${innerWidth<600?4:6}">`;
- for(let d=1;d<=ADV_N;d++){const door=sel.doors.find(x=>x.day===d),locked=!door&&!test&&today<doorDate(c,d),cls=door?(door.done?'done':'opened'):(locked?'locked':'ready');
-  h+=`<button class="gift ${cls}" onclick="openDoor(${c.id},${sel.id},${d})" aria-label="Door ${d}">${giftSVG(d,!!door)}<span class="gd">Dec ${d}${door&&door.done?' ✓':''}</span></button>`}
+ for(let d=1;d<=ADV_N;d++){const door=sel.doors.find(x=>x.day===d),locked=!door&&!test&&today<doorDate(c,d),cls=door?(door.done?'done':'opened'):(locked?'locked':'ready'),tdy=today===doorDate(c,d);
+  h+=`<button class="gift ${cls}${tdy?' today':''}" onclick="openDoor(${c.id},${sel.id},${d})" aria-label="Door ${d}">${tdy?'<span class="tbadge">TODAY</span>':''}${giftSVG(d,!!door)}<span class="gd">Dec ${d}${door&&door.done?' ✓':''}</span></button>`}
  h+='</div>';
  if(waiting){const n=Math.ceil((new Date(c.start+'T00:00:00')-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()))/864e5);h+=`<div class="advveil"><div><div class="advflake">❄️</div><h2>Waiting for winter</h2><p>The box opens on Dec 1</p><p class="advleft">${n} ${n===1?'day':'days'} left</p></div></div></div>`}
  if(!c.finished)h+=`<div class="finishrow" style="margin-top:18px"><button class="primary" onclick="askFinish(${c.id})">Finish challenge</button></div>`;
  $('detailContent').innerHTML=h}
-function showDoor(c,p,door,mine){const t=advTask(c,door.day),txt=t.any||t[door.variant]||t.a;
- openDlg(`<h2>Door ${door.day} ${DAYEMO[door.day-1]}</h2><p style="margin-bottom:2px">Your reading fortune for today</p><div class="fortune"><span class="fday">DECEMBER ${door.day}</span>${esc(txt)}</div><div class="modalactions">${mine?`<button class="secondary" onclick="closeDlg()">Close</button><button class="primary" onclick="toggleDoor(${c.id},${p.id},${door.id})">${door.done?'Mark as not done':'Mark as done'}</button>`:`<button class="primary" onclick="closeDlg()">Close</button>`}</div>`)}
+function showDoor(c,p,door,mine,fresh){const t=advTask(c,door.day),txt=t.any||t[door.variant]||t.a,emo=DAYEMO[door.day-1];
+ const old=document.getElementById('giftov');if(old)old.remove();
+ const o=document.createElement('div');o.id='giftov';o.className='giftov'+(fresh?'':' again');
+ o.innerHTML=`<div class="gscene"><div class="gbox"><div class="gc">${giftSVG(door.day,false)}</div><div class="go">${giftSVG(door.day,true)}</div></div>
+ <div class="gscroll"><div class="roll"></div><div class="paper"><div class="pin"><span class="fday">DECEMBER ${door.day} ${emo}</span><div class="ftxt">${esc(txt)}</div></div></div><div class="roll"></div></div>
+ <div class="gactions">${mine?`<button class="secondary" onclick="closeDlg()">Close</button><button class="primary" onclick="toggleDoor(${c.id},${p.id},${door.id})">${door.done?'Mark as not done':'Mark as done'}</button>`:`<button class="primary" onclick="closeDlg()">Close</button>`}</div></div>`;
+ o.onclick=e=>{if(e.target===o)closeDlg()};document.body.appendChild(o);
+ o.querySelector('.paper').style.setProperty('--ph',(o.querySelector('.pin').scrollHeight+2)+'px');
+ if(fresh)setTimeout(()=>{const b=o.querySelector('.gbox');if(!b||!document.body.contains(o))return;const r=b.getBoundingClientRect();fireworks(r.left+r.width/2,r.top+r.height/2)},850)}
 function openDoor(cid,pid,d){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid);if(!p)return;const door=p.doors.find(x=>x.day===d),mine=p.user_id===myId&&!c.finished;
  if(door)return showDoor(c,p,door,mine);
  if(!mine)return toast(p.user_id===myId?'This calendar is closed.':'This door has not been opened yet.');
@@ -820,7 +857,7 @@ function openDoor(cid,pid,d){const c=findC(cid),p=c&&c.people.find(x=>x.id===pid
 async function pickVariant(cid,pid,d,v){closeDlg();
  const r=await sb.from('advent_doors').insert({challenge_id:cid,participant_id:pid,day:d,variant:v});
  if(r.error)return toast('Could not open the door: '+r.error.message);
- await load();const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),door=p&&p.doors.find(x=>x.day===d);if(door)showDoor(c,p,door,true)}
+ await load();const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),door=p&&p.doors.find(x=>x.day===d);if(door)showDoor(c,p,door,true,true)}
 async function toggleDoor(cid,pid,id){const ev=window.event,fx=(ev&&ev.clientX)||innerWidth/2,fy=(ev&&ev.clientY)||innerHeight/2;closeDlg();
  const c=findC(cid),p=c&&c.people.find(x=>x.id===pid),door=p&&p.doors.find(x=>x.id===id);if(!door||p.user_id!==myId||c.finished)return;
  door.done=!door.done;const now=door.done;refresh();if(now)fireworks(fx,fy);
@@ -853,6 +890,22 @@ async function finishAdvent(c){const counts=c.people.map(p=>{const n=p.doors.fil
  c.finished=true;c.result=r;refresh();
  openDlg(resultHTML(c)+`<div class="modalactions"><button class="primary" onclick="closeDlg()">Close</button></div>`)}
 
+/* ---- Winter snow over the whole site: Dec 1 - Jan 6 (open the site with #snow at the end of the address to preview) ---- */
+function snowOn(){const t=new Date(),m=t.getMonth(),d=t.getDate();return m===11||(m===0&&d<=6)||location.hash==='#snow'}
+function snowInit(){if(!snowOn()||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+ const cv=document.createElement('canvas');cv.id='snowcv';cv.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:6';document.body.appendChild(cv);
+ const cx=cv.getContext('2d'),R=window.devicePixelRatio||1,sprites=[];let W=0,H=0,flakes=[];
+ function sprite(sz){const c=document.createElement('canvas'),n=Math.ceil(sz*2*R)+4;c.width=c.height=n;const g=c.getContext('2d');g.translate(n/2,n/2);g.scale(R,R);g.strokeStyle='#fff';g.lineWidth=Math.max(1,sz/6.5);g.lineCap='round';
+  for(let k=0;k<6;k++){g.save();g.rotate(k*Math.PI/3);g.beginPath();g.moveTo(0,0);g.lineTo(0,-sz);g.moveTo(0,-sz*.55);g.lineTo(sz*.3,-sz*.82);g.moveTo(0,-sz*.55);g.lineTo(-sz*.3,-sz*.82);g.stroke();g.restore()}return c}
+ [4,5,6,7,9].forEach(sz=>sprites.push({sz,c:sprite(sz)}));
+ function mk(init){const sp=sprites[Math.floor(Math.random()*sprites.length)];return{sp,x:Math.random()*W,y:init?Math.random()*H:-14,vy:.3+sp.sz*.07+Math.random()*.35,ph:Math.random()*6.28,sw:.4+Math.random()*.8,rot:Math.random()*6.28,vr:(Math.random()-.5)*.02,a:.55+Math.random()*.4}}
+ function size(){W=innerWidth;H=innerHeight;cv.width=W*R;cv.height=H*R;cx.setTransform(R,0,0,R,0,0);const n=Math.round(Math.min(90,Math.max(35,W*H/22000)));while(flakes.length<n)flakes.push(mk(true));flakes.length=n}
+ size();addEventListener('resize',size);
+ (function loop(){cx.clearRect(0,0,W,H);
+  for(const f of flakes){f.y+=f.vy;f.ph+=.012;f.x+=Math.sin(f.ph)*f.sw*.6;f.rot+=f.vr;if(f.y>H+14){const nf=mk(false);nf.x=Math.random()*W;Object.assign(f,nf)}
+   cx.globalAlpha=f.a;cx.save();cx.translate(f.x,f.y);cx.rotate(f.rot);const d=f.sp.c.width/R;cx.drawImage(f.sp.c,-d/2,-d/2,d,d);cx.restore()}
+  requestAnimationFrame(loop)})()}
+snowInit();
 $('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
 render();start();
 
